@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Всі об'єкти нерухомості Кривого Рогу | Makler KR</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1F2A44;
+            --warm-beige: #E8DCC8;
+            --soft-gold: #C6A75E;
+            --white: #FFFFFF;
+            --dark-text: #2B2D42;
+            --light-bg: #F9F7F2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .logo-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Хедер */
+        header {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo h2 {
+            font-size: 24px;
+            color: var(--soft-gold);
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            font-size: 12px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--warm-beige);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--soft-gold);
+        }
+
+        .header-phone {
+            margin-left: 25px;
+            background-color: var(--soft-gold);
+            color: var(--navy) !important;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 700 !important;
+            display: inline-block;
+        }
+
+        /* Hero сторінки каталогу */
+        .catalog-header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 45px 0;
+            text-align: center;
+        }
+
+        .catalog-header h1 {
+            color: var(--warm-beige);
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .catalog-header p {
+            color: var(--soft-gold);
+            font-size: 16px;
+        }
+
+        /* Панель фільтрів */
+        .filter-panel {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin: -30px auto 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(198, 167, 94, 0.3);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-item label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .filter-item select, 
+        .filter-item input {
+            padding: 11px 14px;
+            border: 1px solid #D0D5DD;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            background: var(--white);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .filter-item select:focus, 
+        .filter-item input:focus {
+            border-color: var(--soft-gold);
+            box-shadow: 0 0 0 3px rgba(198, 167, 94, 0.2);
+        }
+
+        .btn-reset {
+            background: #f1f1f1;
+            color: #555;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .btn-reset:hover {
+            background: #e2e2e2;
+            color: #000;
+        }
+
+        /* Лічильник знайденого */
+        .catalog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0 5px;
+        }
+
+        .catalog-counter {
+            font-size: 15px;
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        /* Сітка об'єктів */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 70px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid #E5E5E5;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-img-holder {
+            width: 100%;
+            height: 220px;
+            background-color: var(--warm-beige);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-holder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(31, 42, 68, 0.88);
+            color: var(--warm-beige);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-price {
+            font-size: 22px;
+            color: var(--soft-gold);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            color: var(--navy);
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        .card-specs {
+            display: flex;
+            gap: 15px;
+            padding: 10px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .card-btn {
+            display: block;
+            text-align: center;
+            background: var(--navy);
+            color: var(--warm-beige);
+            border: 1px solid var(--soft-gold);
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .card-btn:hover {
+            background: var(--soft-gold);
+            color: var(--navy);
+        }
+
+        /* Футер */
+        footer {
+            background-color: #121824;
+            color: var(--warm-beige);
+            padding: 40px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--warm-beige);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--soft-gold);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(232, 220, 200, 0.1);
+            padding-top: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            nav a {
+                margin: 5px 8px;
+            }
+            .header-phone {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+            .filter-panel {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайту -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <h2>Makler KR</h2>
+                <span>Агентство нерухомості</span>
+            </a>
+            <div class="nav-links">
+                <nav>
+                    <a href="index.html">Головна</a>
+                    <a href="index.html#about">Про рієлтора</a>
+                    <a href="catalog.html" style="color: var(--soft-gold); font-weight: 700;">Всі об'єкти</a>
+                    <a href="index.html#request">Залишити заявку</a>
+                    <a href="index.html#pricing">Прайс</a>
+                    <a href="index.html#contacts">Контакти</a>
+                </nav>
+                <a href="tel:+380971732450" class="header-phone">📞 +380 97 173 24 50</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Заголовок сторінки -->
+    <div class="catalog-header">
+        <div class="container">
+            <h1>Каталог нерухомості Кривого Рогу</h1>
+            <p>Пряма база від Андрія Маклера. Оновлюється в режимі реального часу.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- ПАНЕЛЬ ПОШУКУ ТА ФІЛЬТРІВ -->
+        <div class="filter-panel">
+            <div class="filters-grid">
+                <!-- Тип нерухомості -->
+                <div class="filter-item">
+                    <label for="filter-type">Тип об'єкта</label>
+                    <select id="filter-type">
+                        <option value="">Всі типи</option>
+                        <option value="квартира">Квартири</option>
+                        <option value="будинок">Будинки / Котеджі</option>
+                        <option value="комерційна">Комерційна</option>
+                    </select>
+                </div>
+
+                <!-- Район -->
+                <div class="filter-item">
+                    <label for="filter-district">Район Кривого Рогу</label>
+                    <select id="filter-district">
+                        <option value="">Всі райони</option>
+                        <option value="саксаган">Саксаганський</option>
+                        <option value="централь">Центрально-Міський</option>
+                        <option value="покров">Покровський</option>
+                        <option value="металург">Металургійний</option>
+                        <option value="довгин">Довгинцівський</option>
+                        <option value="інгул">Інгулецький</option>
+                        <option value="терн">Тернівський</option>
+                    </select>
+                </div>
+
+                <!-- Кількість кімнат -->
+                <div class="filter-item">
+                    <label for="filter-rooms">Кімнат</label>
+                    <select id="filter-rooms">
+                        <option value="">Будь-яка</option>
+                        <option value="1">1 кімната</option>
+                        <option value="2">2 кімнати</option>
+                        <option value="3">3 кімнати</option>
+                        <option value="4">4+ кімнат</option>
+                    </select>
+                </div>
+
+                <!-- Ціна до -->
+                <div class="filter-item">
+                    <label for="filter-max-price">Ціна до ($)</label>
+                    <input type="number" id="filter-max-price" placeholder="напр. 30000">
+                </div>
+
+                <!-- Кнопка скидання -->
+                <div class="filter-item">
+                    <button type="button" class="btn-reset" id="reset-filters">Скинути фільтри</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Інформаційна плашка -->
+        <div class="catalog-meta">
+            <div class="catalog-counter" id="catalog-counter">Завантаження об'єктів з CRM...</div>
+        </div>
+
+        <!-- Контейнер для карток -->
+        <div class="cards-grid" id="catalog-container">
+            <p style="grid-column: 1/-1; text-align: center; color: #777; padding: 40px 0;">Завантаження повної бази...</p>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container footer-grid">
+            <div>
+                <h3 style="color: var(--soft-gold); margin-bottom: 10px;">Makler KR</h3>
+                <p>На хвилі Кривого Рога!</p>
+                <p>Рієлтор №1 — Андрій Маклер</p>
+            </div>
+            <div class="footer-links">
+                <h4>Контакти</h4>
+                <a href="tel:+380971732450">📞 +380 97 173 24 50</a>
+                <p>📍 м. Кривий Ріг</p>
+                <a href="mailto:info@makler-kr.ua">✉️ info@makler-kr.ua</a>
+            </div>
+            <div>
+                <h4>Графік</h4>
+                <p>Пн - Сб: 09:00 - 19:00</p>
+                <p>Нд: За домовленістю</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; Makler KR. Всі права захищені.</p>
+        </div>
+    </footer>
+
+    <!-- СКРИПТ ПАРСИНГУ ТА ФІЛЬТРАЦІЇ ОБ'ЄКТІВ З REALTSOFT -->
+    <script>
+      const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
+      let allProperties = []; // масив для всіх завантажених об'єктів
+
+      async function loadAllObjects() {
+        const counterEl = document.getElementById("catalog-counter");
+        const container = document.getElementById("catalog-container");
+
+        const proxies = [
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(REALTSOFT_FEED_URL)}`,
+          `https://corsproxy.io/?${encodeURIComponent(REALTSOFT_FEED_URL)}`,
+          REALTSOFT_FEED_URL
+        ];
+
+        let xmlText = null;
+
+        for (const url of proxies) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const text = await res.text();
+              if (text && text.includes("<item")) {
+                xmlText = text;
+                break;
+              }
+            }
+          } catch (e) {}
+        }
+
+        if (!xmlText) {
+          counterEl.textContent = "Не вдалося отримати дані з бази CRM";
+          return;
+        }
+
+        try {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+          const items = xmlDoc.querySelectorAll("item");
+
+          allProperties = [];
+
+          items.forEach(item => {
+            const status = item.querySelector("status")?.textContent;
+            if (status && status !== "active") return;
+
+            const title = item.querySelector("title")?.textContent || "Нерухомість у Кривому Розі";
+            
+            // Ціна
+            const priceEl = item.querySelector("price");
+            const priceVal = Number(priceEl?.textContent || 0);
+            const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
+
+            // Опис
+            let desc = item.querySelector("description")?.textContent || "";
+            if (desc.length > 115) desc = desc.substring(0, 115) + "...";
+
+            // Фото
+            let photoUrl = item.querySelector("image_url")?.textContent;
+            if (!photoUrl || !photoUrl.startsWith("http")) {
+              photoUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
+            }
+
+            // Кількість кімнат
+            const rooms = item.querySelector("room_count")?.textContent || "";
+
+            // Площа та поверховість
+            const area = item.querySelector("area_total")?.textContent || "";
+            const floor = item.querySelector("floor")?.textContent || "";
+            const totalFloors = item.querySelector("total_floors")?.textContent || "";
+
+            // Район та тип
+            const realtyType = (item.querySelector("realty_type")?.textContent || "Квартира").toLowerCase();
+            const districtUk = (item.querySelector("district_uk")?.textContent || item.querySelector("district")?.textContent || "").toLowerCase();
+            const districtDisplay = item.querySelector("district_uk")?.textContent || item.querySelector("district")?.textContent || "";
+
+            allProperties.push({
+              title,
+              price: priceVal,
+              currency,
+              desc,
+              photoUrl,
+              rooms,
+              area,
+              floor,
+              totalFloors,
+              realtyType,
+              districtUk,
+              districtDisplay
+            });
+          });
+
+          renderProperties(allProperties);
+
+        } catch (err) {
+          console.error(err);
+          counterEl.textContent = "Помилка обробки каталогу";
+        }
+      }
+
+      function renderProperties(properties) {
+        const container = document.getElementById("catalog-container");
+        const counterEl = document.getElementById("catalog-counter");
+
+        container.innerHTML = "";
+        counterEl.textContent = `Знайдено актуальних пропозицій: ${properties.length}`;
+
+        if (properties.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; background: #fff; border-radius: 8px;">
+                <h3>За вашими критеріями нічого не знайдено</h3>
+                <p style="color: #666; margin-top: 10px;">Спробуйте змінити фільтри або зверніться до Андрія Маклера для індивідуального підбору.</p>
+                <a href="tel:+380971732450" class="btn-reset" style="display:inline-block; width:auto; margin-top:20px; text-decoration:none; background:var(--navy); color:#fff;">Зателефонувати: +380 97 173 24 50</a>
+            </div>
+          `;
+          return;
+        }
+
+        properties.forEach(p => {
+          const typeBadge = p.districtDisplay ? `${p.realtyType} • ${p.districtDisplay}` : p.realtyType;
+          const formattedPrice = p.price > 0 ? `${p.price.toLocaleString()} ${p.currency}` : "Ціна договірна";
+
+          // Характеристики
+          let specsHtml = "";
+          if (p.rooms) specsHtml += `<span>🛏️ ${p.rooms} кімн.</span>`;
+          if (p.area) specsHtml += `<span>📐 ${p.area} м²</span>`;
+          if (p.floor) specsHtml += `<span>🏢 ${p.floor}/${p.totalFloors || ""} пов.</span>`;
+
+          const card = `
+            <div class="card">
+                <div class="card-img-holder">
+                    <img src="${p.photoUrl}" alt="${p.title}" onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80'">
+                    <span class="card-badge">${typeBadge}</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-price">${formattedPrice}</div>
+                    <h4 class="card-title">${p.title}</h4>
+                    ${specsHtml ? `<div class="card-specs">${specsHtml}</div>` : ''}
+                    <p class="card-desc">${p.desc}</p>
+                    <a href="tel:+380971732450" class="card-btn">📞 Зв'язатися щодо об'єкта</a>
+                </div>
+            </div>
+          `;
+          container.innerHTML += card;
+        });
+      }
+
+      // Функція фільтрації
+      function applyFilters() {
+        const typeFilter = document.getElementById("filter-type").value.toLowerCase();
+        const districtFilter = document.getElementById("filter-district").value.toLowerCase();
+        const roomsFilter = document.getElementById("filter-rooms").value;
+        const maxPriceFilter = Number(document.getElementById("filter-max-price").value) || Infinity;
+
+        const filtered = allProperties.filter(p => {
+          const matchesType = !typeFilter || p.realtyType.includes(typeFilter);
+          const matchesDistrict = !districtFilter || p.districtUk.includes(districtFilter);
+          
+          let matchesRooms = true;
+          if (roomsFilter) {
+            if (roomsFilter === "4") {
+              matchesRooms = Number(p.rooms) >= 4;
+            } else {
+              matchesRooms = p.rooms == roomsFilter;
+            }
+          }
+
+          const matchesPrice = p.price === 0 || p.price <= maxPriceFilter;
+
+          return matchesType && matchesDistrict && matchesRooms && matchesPrice;
+        });
+
+        renderProperties(filtered);
+      }
+
+      // Слухачі подій для фільтрів
+      document.getElementById("filter-type").addEventListener("change", applyFilters);
+      document.getElementById("filter-district").addEventListener("change", applyFilters);
+      document.getElementById("filter-rooms").addEventListener("change", applyFilters);
+      document.getElementById("filter-max-price").addEventListener("input", applyFilters);
+
+      document.getElementById("reset-filters").addEventListener("click", () => {
+        document.getElementById("filter-type").value = "";
+        document.getElementById("filter-district").value = "";
+        document.getElementById("filter-rooms").value = "";
+        document.getElementById("filter-max-price").value = "";
+        renderProperties(allProperties);
+      });
+
+      document.addEventListener("DOMContentLoaded", loadAllObjects);
+    </script>
+</body>
+</html>
