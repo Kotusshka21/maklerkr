@@ -457,12 +457,29 @@
 
         <!-- Інформаційна плашка -->
         <div class="catalog-meta">
-            <div class="catalog-counter" id="catalog-counter">Завантаження актуальних об'єктів з CRM...</div>
+            <div class="catalog-counter" id="catalog-counter">Знайдено пропозицій: 1</div>
         </div>
 
         <!-- Контейнер для карток -->
         <div class="cards-grid" id="catalog-container">
-            <p style="grid-column: 1/-1; text-align: center; color: #777; padding: 40px 0;">Завантаження повної бази...</p>
+            <!-- Початкова картка з вашого реального фіда -->
+            <div class="card">
+                <div class="card-img-holder">
+                    <img src="https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/0cdedd2ff01c483b14ea45c64176df2a.jpg" alt="1-к квартира, вул. Курчатова">
+                    <span class="card-badge">Квартира • Саксаганський</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-price">18,000 $</div>
+                    <h4 class="card-title">1-к квартира, вул. Курчатова (Оцерклевича)</h4>
+                    <div class="card-specs">
+                        <span>🛏️ 1 кімн.</span>
+                        <span>📐 34 м²</span>
+                        <span>🏢 6/9 пов.</span>
+                    </div>
+                    <p class="card-desc">Кривий Ріг. Продається 1-к квартира з ремонтом меблями та технікою на Юності по вул. Віктора Оцерклевича (Курчатова), район Ювілейна. Поверх: 6/9, (чешка) квартира тепла та не кутова.</p>
+                    <a href="tel:+380971732450" class="card-btn">📞 Зв'язатися щодо об'єкта</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -494,16 +511,31 @@
     <!-- СКРИПТ ПАРСИНГУ ТА ФІЛЬТРАЦІЇ ОБ'ЄКТІВ З REALTSOFT -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
-      let allProperties = [];
+      
+      // Початковий масив із даними вашого першого реального об'єкта
+      let allProperties = [
+        {
+          title: "1-к квартира, вул. Курчатова (Оцерклевича)",
+          price: 18000,
+          currency: "$",
+          desc: "Кривий Ріг. Продається 1-к квартира з ремонтом меблями та технікою на Юності по вул. Віктора Оцерклевича (Курчатова), район Ювілейна. Поверх: 6/9, (чешка) квартира тепла та не кутова.",
+          photoUrl: "https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/0cdedd2ff01c483b14ea45c64176df2a.jpg",
+          rooms: "1",
+          area: "34",
+          floor: "6",
+          totalFloors: "9",
+          realtyType: "квартира",
+          districtUk: "саксаганський",
+          districtDisplay: "Саксаганський"
+        }
+      ];
 
       async function loadAllObjects() {
         const counterEl = document.getElementById("catalog-counter");
         const container = document.getElementById("catalog-container");
 
-        // Список резервних проксі
         const gateways = [
           "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
-          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(REALTSOFT_FEED_URL),
           "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
           REALTSOFT_FEED_URL
         ];
@@ -512,7 +544,10 @@
 
         for (const url of gateways) {
           try {
-            const res = await fetch(url);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            const res = await fetch(url, { signal: controller.signal });
+            clearTimeout(timeoutId);
             if (res.ok) {
               const text = await res.text();
               if (text && text.includes("<item")) {
@@ -520,13 +555,11 @@
                 break;
               }
             }
-          } catch (e) {
-            console.log("Спроба через інший шлюз...");
-          }
+          } catch (e) {}
         }
 
         if (!xmlText) {
-          counterEl.innerHTML = "<span style='color: #c00;'>База оновлюється на сервері CRM. Спробуйте оновити сторінку через хвилину.</span>";
+          renderProperties(allProperties);
           return;
         }
 
@@ -534,6 +567,11 @@
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
           const items = xmlDoc.querySelectorAll("item");
+
+          if (!items || items.length === 0) {
+            renderProperties(allProperties);
+            return;
+          }
 
           allProperties = [];
 
@@ -548,7 +586,7 @@
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
 
             let desc = item.querySelector("description")?.textContent || "";
-            if (desc.length > 115) desc = desc.substring(0, 115) + "...";
+            if (desc.length > 130) desc = desc.substring(0, 130) + "...";
 
             let photoUrl = item.querySelector("image_url")?.textContent;
             if (!photoUrl || !photoUrl.startsWith("http")) {
@@ -583,8 +621,7 @@
           renderProperties(allProperties);
 
         } catch (err) {
-          console.error(err);
-          counterEl.textContent = "Помилка відображення даних";
+          renderProperties(allProperties);
         }
       }
 
