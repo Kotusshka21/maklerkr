@@ -582,34 +582,10 @@
             <div class="section-title">
                 <h2>Каталог об'єктів</h2>
                 <div class="underline"></div>
-                <p id="crm-status" style="margin-top: 10px; font-size: 13px; color: #888;">Завантаження актуальних пропозицій...</p>
+                <p id="crm-status" style="margin-top: 10px; font-size: 13px; color: #888;">Завантаження актуальних пропозицій з CRM...</p>
             </div>
             <div class="cards-grid" id="crm-properties-container">
-                <!-- Стартові об'єкти (показуються, поки фід вантажиться або офлайн) -->
-                <div class="card">
-                    <div class="card-img-holder">
-                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80" alt="2-кімнатна квартира">
-                        <span class="card-badge">Квартира</span>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-price">$32,000</div>
-                        <h4 class="card-title">2-кімнатна квартира, 95-й квартал</h4>
-                        <p class="card-desc">54 м², євроремонт, меблі та техніка залишаються.</p>
-                        <a href="tel:+380971732450" class="card-btn">Детальніше</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-img-holder">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Будинок">
-                        <span class="card-badge">Будинок</span>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-price">$65,000</div>
-                        <h4 class="card-title">Будинок, Центр.-Міський район</h4>
-                        <p class="card-desc">120 м², автономне опалення, 6 соток, гараж.</p>
-                        <a href="tel:+380971732450" class="card-btn">Детальніше</a>
-                    </div>
-                </div>
+                <p style="grid-column: 1/-1; text-align: center; color: #777; padding: 40px 0;">Оновлення бази об'єктів...</p>
             </div>
         </div>
     </section>
@@ -770,7 +746,7 @@
         </div>
     </footer>
 
-  <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ З REALTSOFT XML -->
+    <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ З REALTSOFT XML -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
 
@@ -778,38 +754,55 @@
         const statusEl = document.getElementById("crm-status");
         const container = document.getElementById("crm-properties-container");
 
-        // Надійний проксі для обходу CORS на GitHub Pages
-        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL);
+        // Список надійних проксі для читання XML на GitHub Pages
+        const proxies = [
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(REALTSOFT_FEED_URL)}`,
+          `https://corsproxy.io/?${encodeURIComponent(REALTSOFT_FEED_URL)}`,
+          REALTSOFT_FEED_URL
+        ];
+
+        let xmlText = null;
+
+        for (const url of proxies) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const text = await res.text();
+              if (text && text.includes("<item")) {
+                xmlText = text;
+                break;
+              }
+            }
+          } catch (err) {
+            // пробуємо наступний проксі
+          }
+        }
+
+        if (!xmlText) {
+          if (statusEl) statusEl.textContent = "Об'єкти оновлюються в CRM";
+          return;
+        }
 
         try {
-          if (statusEl) statusEl.textContent = "Оновлення каталогу з CRM...";
-
-          const res = await fetch(proxyUrl);
-          if (!res.ok) throw new Error("HTTP error " + res.status);
-          
-          const xmlText = await res.text();
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-
-          // У вашому фіді об'єкти лежать у тегах <item>
           const items = xmlDoc.querySelectorAll("item");
 
           if (!items || items.length === 0) {
-            if (statusEl) statusEl.textContent = "Актуальні об'єкти відсутні";
+            if (statusEl) statusEl.textContent = "Немає активних об'єктів у вивантаженні";
             return;
           }
 
-          container.innerHTML = ""; // очищаємо тестові картки
+          container.innerHTML = ""; // очищаємо блок
 
           items.forEach(item => {
-            // Перевірка статусу (активний)
             const status = item.querySelector("status")?.textContent;
             if (status && status !== "active") return;
 
             // Заголовок
             const title = item.querySelector("title")?.textContent || "Нерухомість у Кривому Розі";
             
-            // Ціна та валюта
+            // Ціна
             const priceEl = item.querySelector("price");
             const priceVal = priceEl?.textContent || "";
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
@@ -819,19 +812,21 @@
             let desc = item.querySelector("description")?.textContent || "";
             if (desc.length > 120) desc = desc.substring(0, 120) + "...";
 
-            // Перше фото з тегу <image_url>
-            const firstImg = item.querySelector("images > image_url")?.textContent;
-            const photoUrl = firstImg || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
+            // Перше фото
+            let photoUrl = item.querySelector("image_url")?.textContent;
+            if (!photoUrl || !photoUrl.startsWith("http")) {
+              photoUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
+            }
 
-            // Тип нерухомості / район
+            // Район / категорія
             const realtyType = item.querySelector("realty_type")?.textContent || "Квартира";
-            const district = item.querySelector("district_uk")?.textContent || "";
+            const district = item.querySelector("district_uk")?.textContent || item.querySelector("district")?.textContent || "";
             const badge = district ? `${realtyType} • ${district}` : realtyType;
 
             const cardHtml = `
               <div class="card">
                   <div class="card-img-holder">
-                      <img src="${photoUrl}" alt="${title}">
+                      <img src="${photoUrl}" alt="${title}" onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80'">
                       <span class="card-badge">${badge}</span>
                   </div>
                   <div class="card-content">
@@ -845,16 +840,13 @@
             container.innerHTML += cardHtml;
           });
 
-          if (statusEl) statusEl.textContent = `Знайдено об'єктів у базі: ${items.length}`;
+          if (statusEl) statusEl.textContent = `Знайдено об'єктів у базі: ${container.children.length}`;
 
         } catch (e) {
-          console.error("Помилка завантаження фіда:", e);
-          if (statusEl) statusEl.textContent = "Каталог нерухомості (офлайн-режим)";
+          console.error("Помилка розбору XML:", e);
+          if (statusEl) statusEl.textContent = "Каталог об'єктів";
         }
       }
-
-      document.addEventListener("DOMContentLoaded", fetchRealsoftObjects);
-    </script>
 
       document.addEventListener("DOMContentLoaded", fetchRealsoftObjects);
     </script>
