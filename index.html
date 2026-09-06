@@ -541,7 +541,7 @@
             <div class="nav-links">
                 <nav>
                     <a href="#about">Про рієлтора</a>
-                    <a href="#properties">Каталог</a>
+                    <a href="catalog.html" style="color: var(--soft-gold); font-weight: 700;">🔍 Каталог (всі об'єкти)</a>
                     <a href="#request">Залишити заявку</a>
                     <a href="#pricing">Прайс</a>
                     <a href="#stories">Історії та Новини</a>
@@ -576,16 +576,19 @@
         </div>
     </section>
 
-    <!-- Каталог нерухомості (Сюди автоматично завантажуються об'єкти з CRM Realtsoft) -->
+    <!-- Каталог нерухомості (Останні 3 надходження + перехід на сторінку пошуку) -->
     <section id="properties">
         <div class="container">
             <div class="section-title">
-                <h2>Каталог об'єктів</h2>
+                <h2>Останні актуальні об'єкти</h2>
                 <div class="underline"></div>
-                <p id="crm-status" style="margin-top: 10px; font-size: 13px; color: #888;">Завантаження актуальних пропозицій з CRM...</p>
+                <p id="crm-status" style="margin-top: 10px; font-size: 13px; color: #888;">Завантаження з CRM...</p>
             </div>
             <div class="cards-grid" id="crm-properties-container">
                 <p style="grid-column: 1/-1; text-align: center; color: #777; padding: 40px 0;">Оновлення бази об'єктів...</p>
+            </div>
+            <div style="text-align: center; margin-top: 45px;">
+                <a href="catalog.html" class="btn" style="font-size: 16px; padding: 16px 36px;">🔍 Переглянути всі об'єкти з фільтрами</a>
             </div>
         </div>
     </section>
@@ -754,7 +757,6 @@
         const statusEl = document.getElementById("crm-status");
         const container = document.getElementById("crm-properties-container");
 
-        // Список надійних проксі для читання XML на GitHub Pages
         const proxies = [
           `https://api.allorigins.win/raw?url=${encodeURIComponent(REALTSOFT_FEED_URL)}`,
           `https://corsproxy.io/?${encodeURIComponent(REALTSOFT_FEED_URL)}`,
@@ -773,9 +775,7 @@
                 break;
               }
             }
-          } catch (err) {
-            // пробуємо наступний проксі
-          }
+          } catch (err) {}
         }
 
         if (!xmlText) {
@@ -795,7 +795,10 @@
 
           container.innerHTML = ""; // очищаємо блок
 
-          items.forEach(item => {
+          // Показуємо на головній максимум 3 найсвіжіших об'єкти
+          const displayItems = Array.from(items).slice(0, 3);
+
+          displayItems.forEach(item => {
             const status = item.querySelector("status")?.textContent;
             if (status && status !== "active") return;
 
@@ -840,7 +843,7 @@
             container.innerHTML += cardHtml;
           });
 
-          if (statusEl) statusEl.textContent = `Знайдено об'єктів у базі: ${container.children.length}`;
+          if (statusEl) statusEl.textContent = `Останні актуальні пропозиції`;
 
         } catch (e) {
           console.error("Помилка розбору XML:", e);
