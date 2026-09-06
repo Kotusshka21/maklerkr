@@ -457,7 +457,7 @@
 
         <!-- Інформаційна плашка -->
         <div class="catalog-meta">
-            <div class="catalog-counter" id="catalog-counter">Завантаження об'єктів з CRM...</div>
+            <div class="catalog-counter" id="catalog-counter">Завантаження актуальних об'єктів з CRM...</div>
         </div>
 
         <!-- Контейнер для карток -->
@@ -494,21 +494,23 @@
     <!-- СКРИПТ ПАРСИНГУ ТА ФІЛЬТРАЦІЇ ОБ'ЄКТІВ З REALTSOFT -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
-      let allProperties = []; // масив для всіх завантажених об'єктів
+      let allProperties = [];
 
       async function loadAllObjects() {
         const counterEl = document.getElementById("catalog-counter");
         const container = document.getElementById("catalog-container");
 
-        const proxies = [
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(REALTSOFT_FEED_URL)}`,
-          `https://corsproxy.io/?${encodeURIComponent(REALTSOFT_FEED_URL)}`,
+        // Список резервних проксі
+        const gateways = [
+          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
+          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(REALTSOFT_FEED_URL),
+          "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
           REALTSOFT_FEED_URL
         ];
 
         let xmlText = null;
 
-        for (const url of proxies) {
+        for (const url of gateways) {
           try {
             const res = await fetch(url);
             if (res.ok) {
@@ -518,11 +520,13 @@
                 break;
               }
             }
-          } catch (e) {}
+          } catch (e) {
+            console.log("Спроба через інший шлюз...");
+          }
         }
 
         if (!xmlText) {
-          counterEl.textContent = "Не вдалося отримати дані з бази CRM";
+          counterEl.innerHTML = "<span style='color: #c00;'>База оновлюється на сервері CRM. Спробуйте оновити сторінку через хвилину.</span>";
           return;
         }
 
@@ -539,30 +543,23 @@
 
             const title = item.querySelector("title")?.textContent || "Нерухомість у Кривому Розі";
             
-            // Ціна
             const priceEl = item.querySelector("price");
             const priceVal = Number(priceEl?.textContent || 0);
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
 
-            // Опис
             let desc = item.querySelector("description")?.textContent || "";
             if (desc.length > 115) desc = desc.substring(0, 115) + "...";
 
-            // Фото
             let photoUrl = item.querySelector("image_url")?.textContent;
             if (!photoUrl || !photoUrl.startsWith("http")) {
               photoUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
             }
 
-            // Кількість кімнат
             const rooms = item.querySelector("room_count")?.textContent || "";
-
-            // Площа та поверховість
             const area = item.querySelector("area_total")?.textContent || "";
             const floor = item.querySelector("floor")?.textContent || "";
             const totalFloors = item.querySelector("total_floors")?.textContent || "";
 
-            // Район та тип
             const realtyType = (item.querySelector("realty_type")?.textContent || "Квартира").toLowerCase();
             const districtUk = (item.querySelector("district_uk")?.textContent || item.querySelector("district")?.textContent || "").toLowerCase();
             const districtDisplay = item.querySelector("district_uk")?.textContent || item.querySelector("district")?.textContent || "";
@@ -587,7 +584,7 @@
 
         } catch (err) {
           console.error(err);
-          counterEl.textContent = "Помилка обробки каталогу";
+          counterEl.textContent = "Помилка відображення даних";
         }
       }
 
@@ -613,7 +610,6 @@
           const typeBadge = p.districtDisplay ? `${p.realtyType} • ${p.districtDisplay}` : p.realtyType;
           const formattedPrice = p.price > 0 ? `${p.price.toLocaleString()} ${p.currency}` : "Ціна договірна";
 
-          // Характеристики
           let specsHtml = "";
           if (p.rooms) specsHtml += `<span>🛏️ ${p.rooms} кімн.</span>`;
           if (p.area) specsHtml += `<span>📐 ${p.area} м²</span>`;
@@ -638,7 +634,6 @@
         });
       }
 
-      // Функція фільтрації
       function applyFilters() {
         const typeFilter = document.getElementById("filter-type").value.toLowerCase();
         const districtFilter = document.getElementById("filter-district").value.toLowerCase();
@@ -659,14 +654,12 @@
           }
 
           const matchesPrice = p.price === 0 || p.price <= maxPriceFilter;
-
           return matchesType && matchesDistrict && matchesRooms && matchesPrice;
         });
 
         renderProperties(filtered);
       }
 
-      // Слухачі подій для фільтрів
       document.getElementById("filter-type").addEventListener("change", applyFilters);
       document.getElementById("filter-district").addEventListener("change", applyFilters);
       document.getElementById("filter-rooms").addEventListener("change", applyFilters);
