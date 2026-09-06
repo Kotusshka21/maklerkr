@@ -770,7 +770,7 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ З REALTSOFT XML -->
+  <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ З REALTSOFT XML -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
 
@@ -778,69 +778,61 @@
         const statusEl = document.getElementById("crm-status");
         const container = document.getElementById("crm-properties-container");
 
-        // Використовуємо проксі на випадок відсутності CORS-заголовків або локального тестування
-        const proxies = [
-          REALTSOFT_FEED_URL,
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(REALTSOFT_FEED_URL)}`,
-          `https://corsproxy.io/?${encodeURIComponent(REALTSOFT_FEED_URL)}`
-        ];
-
-        let xmlText = null;
-
-        for (const url of proxies) {
-          try {
-            const res = await fetch(url);
-            if (res.ok) {
-              xmlText = await res.text();
-              if (xmlText && xmlText.includes("<")) break;
-            }
-          } catch (err) {
-            // пробуємо наступний варіант у разі обмежень
-          }
-        }
-
-        if (!xmlText) {
-          if (statusEl) statusEl.textContent = "Об'єкти з CRM (актуальний каталог)";
-          return;
-        }
+        // Надійний проксі для обходу CORS на GitHub Pages
+        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL);
 
         try {
+          if (statusEl) statusEl.textContent = "Оновлення каталогу з CRM...";
+
+          const res = await fetch(proxyUrl);
+          if (!res.ok) throw new Error("HTTP error " + res.status);
+          
+          const xmlText = await res.text();
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-          const offers = xmlDoc.querySelectorAll("offer, item, property, object");
 
-          if (!offers || offers.length === 0) {
-            if (statusEl) statusEl.textContent = "Об'єкти оновлюються в CRM";
+          // У вашому фіді об'єкти лежать у тегах <item>
+          const items = xmlDoc.querySelectorAll("item");
+
+          if (!items || items.length === 0) {
+            if (statusEl) statusEl.textContent = "Актуальні об'єкти відсутні";
             return;
           }
 
           container.innerHTML = ""; // очищаємо тестові картки
 
-          offers.forEach(item => {
-            // Зчитуємо дані
-            const title = item.querySelector("title, name, type")?.textContent || "Нерухомість у Кривому Розі";
+          items.forEach(item => {
+            // Перевірка статусу (активний)
+            const status = item.querySelector("status")?.textContent;
+            if (status && status !== "active") return;
+
+            // Заголовок
+            const title = item.querySelector("title")?.textContent || "Нерухомість у Кривому Розі";
             
-            let priceVal = item.querySelector("price, value")?.textContent;
-            let currency = item.querySelector("currency")?.textContent || "$";
-            let priceText = priceVal ? `${Number(priceVal).toLocaleString()} ${currency}` : "Ціна договірна";
+            // Ціна та валюта
+            const priceEl = item.querySelector("price");
+            const priceVal = priceEl?.textContent || "";
+            const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
+            const priceText = priceVal ? `${Number(priceVal).toLocaleString()} ${currency}` : "Ціна договірна";
 
-            let desc = item.querySelector("description, note, comment")?.textContent || "";
-            if (desc.length > 110) desc = desc.substring(0, 110) + "...";
+            // Опис
+            let desc = item.querySelector("description")?.textContent || "";
+            if (desc.length > 120) desc = desc.substring(0, 120) + "...";
 
-            // Фотографії
-            let photoUrl = item.querySelector("photo, image, url, picture")?.textContent;
-            if (!photoUrl || !photoUrl.startsWith("http")) {
-              photoUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
-            }
+            // Перше фото з тегу <image_url>
+            const firstImg = item.querySelector("images > image_url")?.textContent;
+            const photoUrl = firstImg || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
 
-            // Район / категорія
-            let category = item.querySelector("category, property-type")?.textContent || "Продаж";
+            // Тип нерухомості / район
+            const realtyType = item.querySelector("realty_type")?.textContent || "Квартира";
+            const district = item.querySelector("district_uk")?.textContent || "";
+            const badge = district ? `${realtyType} • ${district}` : realtyType;
 
             const cardHtml = `
               <div class="card">
                   <div class="card-img-holder">
-                      <img src="${photoUrl}" alt="${title}" onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80'">
-                      <span class="card-badge">${category}</span>
+                      <img src="${photoUrl}" alt="${title}">
+                      <span class="card-badge">${badge}</span>
                   </div>
                   <div class="card-content">
                       <div class="card-price">${priceText}</div>
@@ -853,13 +845,16 @@
             container.innerHTML += cardHtml;
           });
 
-          if (statusEl) statusEl.textContent = `Знайдено об'єктів у базі: ${offers.length}`;
+          if (statusEl) statusEl.textContent = `Знайдено об'єктів у базі: ${items.length}`;
 
         } catch (e) {
-          console.error("Помилка розбору XML:", e);
-          if (statusEl) statusEl.textContent = "Каталог нерухомості";
+          console.error("Помилка завантаження фіда:", e);
+          if (statusEl) statusEl.textContent = "Каталог нерухомості (офлайн-режим)";
         }
       }
+
+      document.addEventListener("DOMContentLoaded", fetchRealsoftObjects);
+    </script>
 
       document.addEventListener("DOMContentLoaded", fetchRealsoftObjects);
     </script>
