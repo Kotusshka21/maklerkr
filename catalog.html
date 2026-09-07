@@ -38,7 +38,6 @@
             padding: 0 20px;
         }
 
-        /* Хедер */
         header {
             background-color: var(--navy);
             color: var(--white);
@@ -119,7 +118,6 @@
             font-size: 16px;
         }
 
-        /* Фільтри */
         .filter-panel {
             background: var(--white);
             border-radius: 10px;
@@ -199,7 +197,6 @@
             font-weight: 600;
         }
 
-        /* Картки об'єктів */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -382,7 +379,7 @@
             border-color: var(--soft-gold);
         }
 
-        /* Модальне вікно з повним описом */
+        /* Модальне вікно повного опису */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -638,7 +635,6 @@
             color: var(--warm-beige);
         }
 
-        /* Футер */
         footer {
             background-color: #121824;
             color: var(--warm-beige);
@@ -737,7 +733,6 @@
     </div>
 
     <div class="container">
-        <!-- Фільтри -->
         <div class="filter-panel">
             <div class="filters-grid">
                 <div class="filter-item">
@@ -787,7 +782,7 @@
         </div>
 
         <div class="catalog-meta">
-            <div class="catalog-counter" id="catalog-counter">Оновлення бази об'єктів...</div>
+            <div class="catalog-counter" id="catalog-counter">Завантаження бази об'єктів...</div>
         </div>
 
         <div class="cards-grid" id="catalog-container"></div>
@@ -857,11 +852,9 @@
         </div>
     </footer>
 
-    <!-- ПАРСИНГ ОБ'ЄКТІВ З REALTSOFT XML -->
+    <!-- ЧИТАННЯ БЕЗПОСЕРЕДНЬО З ЛОКАЛЬНОГО ФАЙЛУ FEED.XML В РЕПОЗИТОРІЇ -->
     <script>
-      const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
       let propertiesData = [];
-
       let currentModalPhotos = [];
       let currentModalIndex = 0;
 
@@ -869,41 +862,22 @@
         const counterEl = document.getElementById("catalog-counter");
         const container = document.getElementById("catalog-container");
 
-        // Список робочих проксі для читання XML на GitHub Pages
-        const proxies = [
-          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
-          "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
-          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(REALTSOFT_FEED_URL),
-          REALTSOFT_FEED_URL
-        ];
-
-        let xmlText = null;
-
-        for (const url of proxies) {
-          try {
-            const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 6000);
-            const res = await fetch(url, { signal: timer.signal });
-            clearTimeout(timer);
-            if (res.ok) {
-              const str = await res.text();
-              if (str && str.includes("<item")) {
-                xmlText = str;
-                break;
-              }
-            }
-          } catch (e) {}
-        }
-
-        if (!xmlText) {
-          counterEl.textContent = "Помилка зв'язку з CRM. Будь ласка, вимкніть VPN в браузері та оновіть сторінку.";
-          return;
-        }
+        // Читаємо напряму власний файл feed.xml (жодних зовнішніх серверів чи проксі)
+        const feedUrl = "feed.xml?v=" + new Date().getTime();
 
         try {
+          const res = await fetch(feedUrl);
+          if (!res.ok) throw new Error("Файл feed.xml не знайдено");
+
+          const xmlText = await res.text();
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
           const items = xmlDoc.querySelectorAll("item");
+
+          if (!items || items.length === 0) {
+            counterEl.textContent = "Об'єкти відсутні у файлі feed.xml";
+            return;
+          }
 
           propertiesData = [];
 
@@ -920,7 +894,6 @@
             let fullDesc = item.querySelector("description")?.textContent || "";
             let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
-            // Збираємо абсолютно всі фотографії об'єкта
             const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
             let photos = [];
             imgNodes.forEach(node => {
@@ -970,7 +943,7 @@
 
         } catch (err) {
           console.error(err);
-          counterEl.textContent = "Помилка розбору даних";
+          counterEl.textContent = "Будь ласка, завантажте файл feed.xml у репозиторій на GitHub.";
         }
       }
 
@@ -1029,7 +1002,6 @@
         });
       }
 
-      // Єдиний обробник кліків
       document.getElementById("catalog-container").addEventListener("click", function(e) {
         const card = e.target.closest(".card");
         if (!card) return;
@@ -1038,7 +1010,6 @@
         const item = propertiesData.find(p => p.idx === cardId);
         if (!item) return;
 
-        // Стрілочка «Назад»
         if (e.target.closest(".nav-prev")) {
           e.preventDefault();
           e.stopPropagation();
@@ -1048,7 +1019,6 @@
           return;
         }
 
-        // Стрілочка «Вперед»
         if (e.target.closest(".nav-next")) {
           e.preventDefault();
           e.stopPropagation();
@@ -1058,10 +1028,8 @@
           return;
         }
 
-        // Кнопка дзвінка
         if (e.target.closest(".card-call-btn")) return;
 
-        // Клік по картці або кнопці «Детальніше» — відкриває повний опис
         e.preventDefault();
         openPropertyDetailsModal(item);
       });
@@ -1143,7 +1111,6 @@
         if (e.key === "Escape") closeModal();
       });
 
-      // Логіка роботи фільтрів
       function runFilter() {
         const typeFilter = document.getElementById("filter-type").value.toLowerCase();
         const districtFilter = document.getElementById("filter-district").value.toLowerCase();
