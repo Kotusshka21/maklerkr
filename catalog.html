@@ -396,7 +396,6 @@
             border-color: var(--soft-gold);
         }
 
-        /* Модальне вікно */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -568,7 +567,6 @@
             line-height: 1.35;
         }
 
-        /* Блок відео */
         .modal-video-box {
             margin-bottom: 25px;
             background: #000;
@@ -842,7 +840,7 @@
         <div class="cards-grid" id="catalog-container"></div>
     </div>
 
-    <!-- Модальне вікно з повним описом та відео -->
+    <!-- Модальне вікно -->
     <div class="modal-overlay" id="propertyDetailsModal">
         <div class="modal-card">
             <div class="modal-top-bar">
@@ -914,7 +912,7 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ: ТОЧНИЙ ПАРСИНГ ХАРАКТЕРИСТИК ІЗ ПОЛЕМ "ВИДЕО" -->
+    <!-- СКРИПТ: АВТОМАТИЧНИЙ ПОШУК ВІДЕО В ОПИСІ ТА ВЛАСТИВОСТЯХ -->
     <script>
       let propertiesData = [];
       let currentModalPhotos = [];
@@ -966,31 +964,29 @@
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
 
             let fullDesc = item.querySelector("description")?.textContent || "";
-            let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
-
-            // 1. Пошук відео у блоці <property label="видео"> або <property label="відео">
             let videoRaw = "";
-            const propNodes = item.querySelectorAll("properties > property");
-            propNodes.forEach(prop => {
-              const label = (prop.getAttribute("label") || "").toLowerCase().trim();
-              if (label === "видео" || label === "відео" || label === "video" || label === "youtube") {
-                videoRaw = prop.textContent.trim();
-              }
-            });
 
-            // 2. Якщо в properties немає — перевіряємо прямі теги або опис
-            if (!videoRaw) {
-              videoRaw = item.querySelector("video, video_url, youtube")?.textContent.trim() || "";
+            // 1. Шукаємо посилання на YouTube прямо в тексті опису
+            const ytMatch = fullDesc.match(/(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+[^\s<]*)/i);
+            if (ytMatch) {
+              videoRaw = ytMatch[0];
+              // Акуратно прибираємо довге посилання та слово "відео" перед ним із тексту
+              fullDesc = fullDesc.replace(/(?:відео|видео|video)?(?:\s*[:\-]\s*)?https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+[^\s<]*/gi, "").trim();
             }
+
+            // 2. Якщо в описі не було — перевіряємо кастомні властивості <property label="видео">
             if (!videoRaw) {
-              const ytMatch = fullDesc.match(/(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+[^\s]*)/i);
-              if (ytMatch) {
-                videoRaw = ytMatch[0];
-                fullDesc = fullDesc.replace(videoRaw, "").trim();
-              }
+              const propNodes = item.querySelectorAll("properties > property");
+              propNodes.forEach(prop => {
+                const label = (prop.getAttribute("label") || "").toLowerCase().trim();
+                if (label === "видео" || label === "відео" || label === "video" || label === "youtube") {
+                  videoRaw = prop.textContent.trim();
+                }
+              });
             }
 
             const videoEmbedUrl = convertToYouTubeEmbed(videoRaw);
+            let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
             // Зчитуємо фотографії
             const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
@@ -1081,7 +1077,7 @@
             <div class="slider-box">
                 <img class="card-slider-img" src="${item.photos[0]}" alt="${item.title}">
                 <span class="card-badge">${typeBadge}</span>
-                ${item.videoUrl ? `<span class="video-badge">▶️ Є відео</span>` : ''}
+                ${item.videoUrl ? `<span class="video-badge">▶️ Відео</span>` : ''}
                 <span class="photo-counter">📷 1 / ${item.photos.length}</span>
                 ${item.photos.length > 1 ? `
                   <button type="button" class="nav-arrow nav-prev" title="Попереднє фото">&#10094;</button>
