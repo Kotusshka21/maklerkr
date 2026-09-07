@@ -251,6 +251,20 @@
             z-index: 5;
         }
 
+        .video-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #E63946;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            z-index: 5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
         .photo-counter {
             position: absolute;
             bottom: 12px;
@@ -379,7 +393,7 @@
             border-color: var(--soft-gold);
         }
 
-        /* Модальне вікно повного опису */
+        /* Модальне вікно */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -549,6 +563,32 @@
             color: var(--navy);
             margin-bottom: 18px;
             line-height: 1.35;
+        }
+
+        /* Блок відеоплеєра */
+        .modal-video-box {
+            margin-bottom: 25px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            display: none;
+        }
+
+        .modal-video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .modal-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
         .modal-specs-grid {
@@ -788,7 +828,7 @@
         <div class="cards-grid" id="catalog-container"></div>
     </div>
 
-    <!-- Модальне вікно повного опису -->
+    <!-- Модальне вікно повного опису + відео -->
     <div class="modal-overlay" id="propertyDetailsModal">
         <div class="modal-card">
             <div class="modal-top-bar">
@@ -797,6 +837,7 @@
             </div>
 
             <div class="modal-scroll-body">
+                <!-- Слайдер фотографій -->
                 <div class="modal-slider-section">
                     <button type="button" class="modal-nav modal-nav-prev" id="mPrevBtn">&#10094;</button>
                     <img id="mActiveImg" src="" alt="Фото об'єкта">
@@ -812,8 +853,17 @@
 
                     <h2 class="modal-title-text" id="mFullTitle">Назва об'єкта</h2>
 
+                    <!-- Блок вбудованого відео -->
+                    <div class="modal-video-box" id="mVideoContainer">
+                        <div class="modal-video-wrapper">
+                            <iframe id="mVideoFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Сітка параметрів -->
                     <div class="modal-specs-grid" id="mSpecsGrid"></div>
 
+                    <!-- Повний опис -->
                     <h4 class="modal-desc-heading">Опис від рієлтора:</h4>
                     <div class="modal-full-description" id="mFullDesc"></div>
                 </div>
@@ -852,22 +902,35 @@
         </div>
     </footer>
 
-    <!-- ЧИТАННЯ БЕЗПОСЕРЕДНЬО З ЛОКАЛЬНОГО ФАЙЛУ FEED.XML В РЕПОЗИТОРІЇ -->
+    <!-- СКРИПТ: ЧИТАННЯ XML З ПІДТРИМКОЮ ВІДЕО -->
     <script>
       let propertiesData = [];
       let currentModalPhotos = [];
       let currentModalIndex = 0;
 
+      // Перетворює будь-яке посилання на YouTube у формат для вбудовування
+      function formatYouTubeUrl(url) {
+        if (!url) return "";
+        let videoId = "";
+        if (url.includes("youtu.be/")) {
+          videoId = url.split("youtu.be/")[1].split("?")[0];
+        } else if (url.includes("watch?v=")) {
+          videoId = url.split("watch?v=")[1].split("&")[0];
+        } else if (url.includes("shorts/")) {
+          videoId = url.split("shorts/")[1].split("?")[0];
+        } else if (url.includes("embed/")) {
+          return url;
+        }
+        return videoId ? "https://www.youtube.com/embed/" + videoId : url;
+      }
+
       async function fetchAndRender() {
         const counterEl = document.getElementById("catalog-counter");
-        const container = document.getElementById("catalog-container");
-
-        // Читаємо напряму власний файл feed.xml (жодних зовнішніх серверів чи проксі)
         const feedUrl = "feed.xml?v=" + new Date().getTime();
 
         try {
           const res = await fetch(feedUrl);
-          if (!res.ok) throw new Error("Файл feed.xml не знайдено");
+          if (!res.ok) throw new Error("feed.xml не знайдено");
 
           const xmlText = await res.text();
           const parser = new DOMParser();
@@ -894,6 +957,10 @@
             let fullDesc = item.querySelector("description")?.textContent || "";
             let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
+            // Зчитуємо посилання на відео з CRM
+            const videoUrl = item.querySelector("video, video_url, youtube, video_link")?.textContent.trim() || "";
+
+            // Зчитуємо всі фото
             const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
             let photos = [];
             imgNodes.forEach(node => {
@@ -925,7 +992,8 @@
               currency,
               shortDesc,
               fullDesc,
-              photos: photos,
+              videoUrl,
+              photos,
               currentSlide: 0,
               rooms,
               area,
@@ -943,7 +1011,7 @@
 
         } catch (err) {
           console.error(err);
-          counterEl.textContent = "Будь ласка, завантажте файл feed.xml у репозиторій на GitHub.";
+          counterEl.textContent = "Помилка завантаження каталогу";
         }
       }
 
@@ -981,6 +1049,7 @@
             <div class="slider-box">
                 <img class="card-slider-img" src="${item.photos[0]}" alt="${item.title}">
                 <span class="card-badge">${typeBadge}</span>
+                ${item.videoUrl ? `<span class="video-badge">🎥 Є відео</span>` : ''}
                 <span class="photo-counter">📷 1 / ${item.photos.length}</span>
                 ${item.photos.length > 1 ? `
                   <button type="button" class="nav-arrow nav-prev" title="Попереднє фото">&#10094;</button>
@@ -1054,6 +1123,17 @@
         const badgeText = item.districtDisplay ? `${item.realtyType} • ${item.districtDisplay}` : item.realtyType;
         document.getElementById("mBadge").textContent = badgeText;
 
+        // Встановлення відеоплеєра, якщо є посилання
+        const videoBox = document.getElementById("mVideoContainer");
+        const videoFrame = document.getElementById("mVideoFrame");
+        if (item.videoUrl) {
+          videoFrame.src = formatYouTubeUrl(item.videoUrl);
+          videoBox.style.display = "block";
+        } else {
+          videoFrame.src = "";
+          videoBox.style.display = "none";
+        }
+
         const specsGrid = document.getElementById("mSpecsGrid");
         specsGrid.innerHTML = `
           ${item.rooms ? `<div class="modal-spec-box"><span class="modal-spec-label">Кімнат</span><span class="modal-spec-val">${item.rooms}</span></div>` : ''}
@@ -1096,6 +1176,8 @@
       function closeModal() {
         document.getElementById("propertyDetailsModal").classList.remove("open");
         document.body.style.overflow = "auto";
+        // Зупиняємо відео при закритті модального вікна
+        document.getElementById("mVideoFrame").src = "";
       }
 
       document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
