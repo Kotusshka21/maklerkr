@@ -38,7 +38,6 @@
             padding: 0 20px;
         }
 
-        /* Хедер */
         header {
             background-color: var(--navy);
             color: var(--white);
@@ -119,7 +118,6 @@
             font-size: 16px;
         }
 
-        /* Фільтри */
         .filter-panel {
             background: var(--white);
             border-radius: 10px;
@@ -199,7 +197,6 @@
             font-weight: 600;
         }
 
-        /* Картки об'єктів */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -382,7 +379,6 @@
             border-color: var(--soft-gold);
         }
 
-        /* МОДАЛЬНЕ ВІКНО: ПОВНЕ ОПИСАННЯ + ФОТО */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -638,7 +634,6 @@
             color: var(--warm-beige);
         }
 
-        /* Футер */
         footer {
             background-color: #121824;
             color: var(--warm-beige);
@@ -709,7 +704,6 @@
 </head>
 <body>
 
-    <!-- Шапка сайту -->
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">
@@ -738,7 +732,6 @@
     </div>
 
     <div class="container">
-        <!-- ПАНЕЛЬ ПОШУКУ ТА ФІЛЬТРІВ -->
         <div class="filter-panel">
             <div class="filters-grid">
                 <div class="filter-item">
@@ -791,11 +784,10 @@
             <div class="catalog-counter" id="catalog-counter">Завантаження об'єктів...</div>
         </div>
 
-        <!-- Контейнер для карток -->
         <div class="cards-grid" id="catalog-container"></div>
     </div>
 
-    <!-- МОДАЛЬНЕ ВІКНО З ДЕТАЛЬНИМ ОПИСОМ ТА ФОТО -->
+    <!-- МОДАЛЬНЕ ВІКНО ПОВНОГО ОПИСУ -->
     <div class="modal-overlay" id="propertyDetailsModal">
         <div class="modal-card">
             <div class="modal-top-bar">
@@ -835,7 +827,6 @@
         </div>
     </div>
 
-    <!-- Футер -->
     <footer>
         <div class="container footer-grid">
             <div>
@@ -860,7 +851,7 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ: ПАРСИНГ, ФІЛЬТРИ, СЛАЙДЕР ТА ВІКНО ПОВНОГО ОПИСУ -->
+    <!-- СКРИПТ: ЧИТАННЯ НАПРЯМУ З REPO АБО CRM -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
       let propertiesData = [];
@@ -870,34 +861,32 @@
 
       async function fetchAndRender() {
         const counterEl = document.getElementById("catalog-counter");
-        const container = document.getElementById("catalog-container");
 
-        const proxies = [
-          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
+        // Джерела: спочатку пробуємо локальний синхронізований фід у репозиторії, далі зовнішні джерела
+        const sources = [
+          "feed.xml",
+          "https://raw.githubusercontent.com/kotusshka21/maklerkr/main/feed.xml",
           "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
-          REALTSOFT_FEED_URL
+          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL)
         ];
 
         let xmlText = null;
 
-        for (const url of proxies) {
+        for (const src of sources) {
           try {
-            const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 4000);
-            const res = await fetch(url, { signal: timer.signal });
-            clearTimeout(timer);
+            const res = await fetch(src + "?t=" + new Date().getTime());
             if (res.ok) {
-              const str = await res.text();
-              if (str && str.includes("<item")) {
-                xmlText = str;
+              const text = await res.text();
+              if (text && text.includes("<item")) {
+                xmlText = text;
                 break;
               }
             }
-          } catch (e) {}
+          } catch (err) {}
         }
 
         if (!xmlText) {
-          counterEl.textContent = "Не вдалося отримати зв'язок з сервером CRM";
+          counterEl.textContent = "Завантаження бази CRM...";
           return;
         }
 
@@ -905,6 +894,8 @@
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
           const items = xmlDoc.querySelectorAll("item");
+
+          if (!items || items.length === 0) return;
 
           propertiesData = [];
 
@@ -921,7 +912,7 @@
             let fullDesc = item.querySelector("description")?.textContent || "";
             let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
-            const imgNodes = item.querySelectorAll("image_url, photo, picture, image");
+            const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
             let photos = [];
             imgNodes.forEach(node => {
               const u = node.textContent.trim();
@@ -970,7 +961,6 @@
 
         } catch (err) {
           console.error(err);
-          counterEl.textContent = "Помилка розбору даних";
         }
       }
 
@@ -1029,7 +1019,6 @@
         });
       }
 
-      // ЄДИНИЙ ОБРОБНИК КЛІКІВ
       document.getElementById("catalog-container").addEventListener("click", function(e) {
         const card = e.target.closest(".card");
         if (!card) return;
