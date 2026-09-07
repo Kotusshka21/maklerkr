@@ -860,137 +860,51 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ З АВТОКЕШУВАННЯМ ТА НАДІЙНИМ ЗАВАНТАЖЕННЯМ -->
+    <!-- СКРИПТ: ПАРСИНГ, ФІЛЬТРИ, СЛАЙДЕР ТА ВІКНО ПОВНОГО ОПИСУ -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
-      const CACHE_KEY = "makler_kr_cached_xml";
       let propertiesData = [];
 
       let currentModalPhotos = [];
       let currentModalIndex = 0;
 
-      // Базові реальні об'єкти (якщо мережа або VPN повністю блокує запит)
-      const fallbackObjects = [
-        {
-          idx: 0,
-          title: "Продажа / Квартира / ул. Курчатова, Саксаганский, Кривой Рог",
-          price: 18000,
-          currency: "$",
-          shortDesc: "Кривий Ріг. Продається 1-к квартира з ремонтом меблями та технікою на Юності по вул. Віктора Оцерклевича (Курчатова)...",
-          fullDesc: "Кривий Ріг. Продається 1-к квартира з ремонтом меблями та технікою на Юності по вул. Віктора Оцерклевича (Курчатова), район Ювілейна. Поверх: 6/9, (чешка) квартира тепла та не кутова. Планування покращене, функціональне: кімната окремо, великий коридор, містка та затишна кухня, є балкон. Площа 34/17/8м2. Стан: Свіжий та якісний ремонт, вікна та труби м/п, натяжні стелі, нова сантехніка, ванна у кахлі, залізні вхідні двері, підлога – лінолеум. Нові радіатори опалення, замінені на м/п всі стояки. Квартира з меблями та технікою. Пральна машинка, кухонна побутова техніка та бойлер. Лічильники на воду, газ, світло. Теплолічильник на будинку. Поруч є все для комфортного життя. Екологічно чистий район, поруч річка та паркова зона. Боргів, прописаних та проблем немає. Документи готові до продажу.",
-          photos: [
-            "https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/0cdedd2ff01c483b14ea45c64176df2a.jpg",
-            "https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/87fd6668e41cf57811ffef1bdfa9dd4b.jpg",
-            "https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/18210862bdd647563176dacd03359f9d.jpg"
-          ],
-          currentSlide: 0,
-          rooms: "1",
-          area: "34",
-          areaLiving: "17",
-          areaKitchen: "8",
-          floor: "6",
-          totalFloors: "9",
-          realtyType: "квартира",
-          districtUk: "саксаганський",
-          districtDisplay: "Саксаганський"
-        },
-        {
-          idx: 1,
-          title: "Продажа / Квартира / ул. 5-й Заречный, Покровский, Кривой Рог",
-          price: 45000,
-          currency: "$",
-          shortDesc: "Продається простора 3-кімнатна квартира з капітальним ремонтом на мікрорайоні 5-й Зарічний...",
-          fullDesc: "Продається простора 3-кімнатна квартира на 5-му Зарічному, Покровський район. Загальна площа 67 м2, кухня 9 м2. Зручний середній поверх 2/9. Якісний ремонт, автономне планування, засклений балкон і лоджія. Повністю готова до заселення.",
-          photos: [
-            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-          ],
-          currentSlide: 0,
-          rooms: "3",
-          area: "67",
-          areaLiving: "40",
-          areaKitchen: "9",
-          floor: "2",
-          totalFloors: "9",
-          realtyType: "квартира",
-          districtUk: "покровський",
-          districtDisplay: "Покровський"
-        },
-        {
-          idx: 2,
-          title: "Продажа / Квартира / ул. Грицевца, Терновский, Кривой Рог",
-          price: 5500,
-          currency: "$",
-          shortDesc: "Бюджетний варіант 1-кімнатної квартири по вул. Грицевця, Тернівський район...",
-          fullDesc: "Продаж 1-кімнатної квартири по вул. Грицевця, Тернівський район. Загальна площа 32 м2. Поверх 5/5. Житловий стан під ремонт на ваш смак, тихий двір, поруч магазини та зупинка транспорту. Документи перевірені та готові до нотаріальної угоди.",
-          photos: [
-            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"
-          ],
-          currentSlide: 0,
-          rooms: "1",
-          area: "32",
-          areaLiving: "16",
-          areaKitchen: "6",
-          floor: "5",
-          totalFloors: "5",
-          realtyType: "квартира",
-          districtUk: "тернівський",
-          districtDisplay: "Тернівський"
-        }
-      ];
-
       async function fetchAndRender() {
         const counterEl = document.getElementById("catalog-counter");
+        const container = document.getElementById("catalog-container");
 
-        // Спочатку перевіряємо, чи є вже збережений XML у пам'яті браузера
-        const cachedXml = localStorage.getItem(CACHE_KEY);
-        if (cachedXml) {
-          parseXmlAndRender(cachedXml);
-        } else {
-          // Якщо пам'ять пуста — одразу показуємо об'єкти (без затримки)
-          propertiesData = fallbackObjects;
-          displayCards(propertiesData);
-        }
-
-        // Шлюзи для оновлення свіжих даних у фоні
-        const gateways = [
+        const proxies = [
           "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
           "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
-          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(REALTSOFT_FEED_URL),
           REALTSOFT_FEED_URL
         ];
 
         let xmlText = null;
 
-        for (const url of gateways) {
+        for (const url of proxies) {
           try {
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 6000);
+            const timer = setTimeout(() => controller.abort(), 4000);
             const res = await fetch(url, { signal: timer.signal });
             clearTimeout(timer);
             if (res.ok) {
               const str = await res.text();
               if (str && str.includes("<item")) {
                 xmlText = str;
-                localStorage.setItem(CACHE_KEY, str); // зберігаємо свіжий стан
                 break;
               }
             }
           } catch (e) {}
         }
 
-        if (xmlText) {
-          parseXmlAndRender(xmlText);
+        if (!xmlText) {
+          counterEl.textContent = "Не вдалося отримати зв'язок з сервером CRM";
+          return;
         }
-      }
 
-      function parseXmlAndRender(xmlString) {
         try {
           const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+          const xmlDoc = parser.parseFromString(xmlText, "text/xml");
           const items = xmlDoc.querySelectorAll("item");
-
-          if (!items || items.length === 0) return;
 
           propertiesData = [];
 
@@ -1056,6 +970,7 @@
 
         } catch (err) {
           console.error(err);
+          counterEl.textContent = "Помилка розбору даних";
         }
       }
 
