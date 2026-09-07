@@ -382,7 +382,7 @@
             border-color: var(--soft-gold);
         }
 
-        /* МОДАЛЬНЕ ВІКНО З ПОВНИМ ОПИСОМ */
+        /* Модальне вікно з повним описом */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -737,7 +737,7 @@
     </div>
 
     <div class="container">
-        <!-- ПАНЕЛЬ ПОШУКУ ТА ФІЛЬТРІВ -->
+        <!-- Фільтри -->
         <div class="filter-panel">
             <div class="filters-grid">
                 <div class="filter-item">
@@ -787,13 +787,13 @@
         </div>
 
         <div class="catalog-meta">
-            <div class="catalog-counter" id="catalog-counter">Завантаження об'єктів...</div>
+            <div class="catalog-counter" id="catalog-counter">Оновлення бази об'єктів...</div>
         </div>
 
         <div class="cards-grid" id="catalog-container"></div>
     </div>
 
-    <!-- МОДАЛЬНЕ ВІКНО ПОВНОГО ОПИСУ -->
+    <!-- Модальне вікно повного опису -->
     <div class="modal-overlay" id="propertyDetailsModal">
         <div class="modal-card">
             <div class="modal-top-bar">
@@ -857,7 +857,7 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ: ПАРСИНГ ВСІХ 11+ ОБ'ЄКТІВ З REALTSOFT XML -->
+    <!-- ПАРСИНГ ОБ'ЄКТІВ З REALTSOFT XML -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
       let propertiesData = [];
@@ -869,10 +869,11 @@
         const counterEl = document.getElementById("catalog-counter");
         const container = document.getElementById("catalog-container");
 
-        // Список джерел для безперебійного читання фіда
+        // Список робочих проксі для читання XML на GitHub Pages
         const proxies = [
           "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
           "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
+          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(REALTSOFT_FEED_URL),
           REALTSOFT_FEED_URL
         ];
 
@@ -881,7 +882,7 @@
         for (const url of proxies) {
           try {
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 7000);
+            const timer = setTimeout(() => controller.abort(), 6000);
             const res = await fetch(url, { signal: timer.signal });
             clearTimeout(timer);
             if (res.ok) {
@@ -895,7 +896,7 @@
         }
 
         if (!xmlText) {
-          counterEl.textContent = "Не вдалося отримати зв'язок з базою CRM";
+          counterEl.textContent = "Помилка зв'язку з CRM. Будь ласка, вимкніть VPN в браузері та оновіть сторінку.";
           return;
         }
 
@@ -916,11 +917,10 @@
             const priceVal = Number(priceEl?.textContent || 0);
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
 
-            // Повний опис з CRM
             let fullDesc = item.querySelector("description")?.textContent || "";
             let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
-            // Збираємо абсолютно всі фото об'єкта
+            // Збираємо абсолютно всі фотографії об'єкта
             const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
             let photos = [];
             imgNodes.forEach(node => {
@@ -1029,7 +1029,7 @@
         });
       }
 
-      // Єдиний надійний клік для гортання фото та відкриття повного опису
+      // Єдиний обробник кліків
       document.getElementById("catalog-container").addEventListener("click", function(e) {
         const card = e.target.closest(".card");
         if (!card) return;
@@ -1058,10 +1058,10 @@
           return;
         }
 
-        // Якщо натиснули подзвонити — здійснюється дзвінок
+        // Кнопка дзвінка
         if (e.target.closest(".card-call-btn")) return;
 
-        // Клік по «Детальніше», фото чи картці — відкриває повний опис
+        // Клік по картці або кнопці «Детальніше» — відкриває повний опис
         e.preventDefault();
         openPropertyDetailsModal(item);
       });
