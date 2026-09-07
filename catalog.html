@@ -38,6 +38,7 @@
             padding: 0 20px;
         }
 
+        /* Хедер */
         header {
             background-color: var(--navy);
             color: var(--white);
@@ -118,6 +119,7 @@
             font-size: 16px;
         }
 
+        /* Фільтри */
         .filter-panel {
             background: var(--white);
             border-radius: 10px;
@@ -197,6 +199,7 @@
             font-weight: 600;
         }
 
+        /* Картки об'єктів */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -379,6 +382,7 @@
             border-color: var(--soft-gold);
         }
 
+        /* МОДАЛЬНЕ ВІКНО З ПОВНИМ ОПИСОМ */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -634,6 +638,7 @@
             color: var(--warm-beige);
         }
 
+        /* Футер */
         footer {
             background-color: #121824;
             color: var(--warm-beige);
@@ -732,6 +737,7 @@
     </div>
 
     <div class="container">
+        <!-- ПАНЕЛЬ ПОШУКУ ТА ФІЛЬТРІВ -->
         <div class="filter-panel">
             <div class="filters-grid">
                 <div class="filter-item">
@@ -851,7 +857,7 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ: ЧИТАННЯ НАПРЯМУ З REPO АБО CRM -->
+    <!-- СКРИПТ: ПАРСИНГ ВСІХ 11+ ОБ'ЄКТІВ З REALTSOFT XML -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
       let propertiesData = [];
@@ -861,32 +867,35 @@
 
       async function fetchAndRender() {
         const counterEl = document.getElementById("catalog-counter");
+        const container = document.getElementById("catalog-container");
 
-        // Джерела: спочатку пробуємо локальний синхронізований фід у репозиторії, далі зовнішні джерела
-        const sources = [
-          "feed.xml",
-          "https://raw.githubusercontent.com/kotusshka21/maklerkr/main/feed.xml",
+        // Список джерел для безперебійного читання фіда
+        const proxies = [
+          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
           "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
-          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL)
+          REALTSOFT_FEED_URL
         ];
 
         let xmlText = null;
 
-        for (const src of sources) {
+        for (const url of proxies) {
           try {
-            const res = await fetch(src + "?t=" + new Date().getTime());
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 7000);
+            const res = await fetch(url, { signal: timer.signal });
+            clearTimeout(timer);
             if (res.ok) {
-              const text = await res.text();
-              if (text && text.includes("<item")) {
-                xmlText = text;
+              const str = await res.text();
+              if (str && str.includes("<item")) {
+                xmlText = str;
                 break;
               }
             }
-          } catch (err) {}
+          } catch (e) {}
         }
 
         if (!xmlText) {
-          counterEl.textContent = "Завантаження бази CRM...";
+          counterEl.textContent = "Не вдалося отримати зв'язок з базою CRM";
           return;
         }
 
@@ -894,8 +903,6 @@
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
           const items = xmlDoc.querySelectorAll("item");
-
-          if (!items || items.length === 0) return;
 
           propertiesData = [];
 
@@ -909,9 +916,11 @@
             const priceVal = Number(priceEl?.textContent || 0);
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
 
+            // Повний опис з CRM
             let fullDesc = item.querySelector("description")?.textContent || "";
             let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
+            // Збираємо абсолютно всі фото об'єкта
             const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
             let photos = [];
             imgNodes.forEach(node => {
@@ -961,6 +970,7 @@
 
         } catch (err) {
           console.error(err);
+          counterEl.textContent = "Помилка розбору даних";
         }
       }
 
@@ -1019,6 +1029,7 @@
         });
       }
 
+      // Єдиний надійний клік для гортання фото та відкриття повного опису
       document.getElementById("catalog-container").addEventListener("click", function(e) {
         const card = e.target.closest(".card");
         if (!card) return;
@@ -1027,6 +1038,7 @@
         const item = propertiesData.find(p => p.idx === cardId);
         if (!item) return;
 
+        // Стрілочка «Назад»
         if (e.target.closest(".nav-prev")) {
           e.preventDefault();
           e.stopPropagation();
@@ -1036,6 +1048,7 @@
           return;
         }
 
+        // Стрілочка «Вперед»
         if (e.target.closest(".nav-next")) {
           e.preventDefault();
           e.stopPropagation();
@@ -1045,8 +1058,10 @@
           return;
         }
 
+        // Якщо натиснули подзвонити — здійснюється дзвінок
         if (e.target.closest(".card-call-btn")) return;
 
+        // Клік по «Детальніше», фото чи картці — відкриває повний опис
         e.preventDefault();
         openPropertyDetailsModal(item);
       });
@@ -1128,6 +1143,7 @@
         if (e.key === "Escape") closeModal();
       });
 
+      // Логіка роботи фільтрів
       function runFilter() {
         const typeFilter = document.getElementById("filter-type").value.toLowerCase();
         const districtFilter = document.getElementById("filter-district").value.toLowerCase();
