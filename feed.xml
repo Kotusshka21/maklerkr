@@ -313,7 +313,8 @@ ID 126</description>
 &#13;
 Запрошую до співпраці власників нерухомості! Продаю швидко та вигідно.&#13;
 &#13;
-ID: 26</description>
+ID: 26&#13;
+Є відеоогляд квартири https://youtu.be/51nWSPYNHC8</description>
         <category value="1">Жилая недвижимость</category>
         <realty_type value="1">Квартира</realty_type>
         <deal value="1">Продажа</deal>
@@ -326,10 +327,9 @@ ID: 26</description>
             <district value="7886">Покровский</district>
             <street value="7598">Кропивницкого</street>
             <street_type value="street">улица</street_type>
-            <map_lat>48.0120783</map_lat>
-            <map_lng>33.4875565</map_lng>
-            <apartment>28</apartment>
-            <landmark></landmark>
+            <map_lat>48.0112422</map_lat>
+            <map_lng>33.4877611</map_lng>
+            <landmark>129</landmark>
             <region_uk value="1658">Дніпропетровська область</region_uk>
             <county_uk value="1753" visible="1">Криворізька міськрада</county_uk>
             <city_uk value="1757">Кривий Ріг</city_uk>
@@ -388,7 +388,7 @@ ID: 26</description>
             <tag>кропивницкого</tag>
         </tags>
         <created_at>2026-04-19T17:48:56+03:00</created_at>
-        <updated_at>2026-08-14T16:08:44+03:00</updated_at>
+        <updated_at>2026-09-07T18:42:07+03:00</updated_at>
     </item>
     <item internal-id="114">
         <status>active</status>
@@ -759,7 +759,8 @@ ID 28</description>
 Ця квартира — чудова можливість для тих, хто шукає комфортне житло в гарному, крутому районі.&#13;
 Для отримання додаткової інформації або для запису на перегляд, будь ласка, телефонуйте.&#13;
 &#13;
-ID: 33</description>
+ID: 33&#13;
+Є відеоогляд квартири https://youtu.be/bp51XV2lWMA</description>
         <category value="1">Жилая недвижимость</category>
         <realty_type value="1">Квартира</realty_type>
         <deal value="1">Продажа</deal>
@@ -831,7 +832,7 @@ ID: 33</description>
             <tag>электрозаводская</tag>
         </tags>
         <created_at>2026-05-05T20:49:25+03:00</created_at>
-        <updated_at>2026-08-15T13:43:26+03:00</updated_at>
+        <updated_at>2026-09-07T18:12:56+03:00</updated_at>
     </item>
     <item internal-id="53">
         <status>active</status>
@@ -866,7 +867,8 @@ ID: 33</description>
 &#13;
 Запрошую до співпраці власників  нерухомості.&#13;
 Продаю швидко та вигідно. &#13;
-ID 52</description>
+ID 52&#13;
+Є відеоогляд квартири https://youtu.be/wJWpDf5fd3M</description>
         <category value="1">Жилая недвижимость</category>
         <realty_type value="1">Квартира</realty_type>
         <deal value="1">Продажа</deal>
@@ -926,7 +928,7 @@ ID 52</description>
             <tag>юбилейная</tag>
         </tags>
         <created_at>2026-06-24T13:16:54+03:00</created_at>
-        <updated_at>2026-08-14T17:34:48+03:00</updated_at>
+        <updated_at>2026-09-07T18:18:04+03:00</updated_at>
     </item>
     <item internal-id="82">
         <status>active</status>
