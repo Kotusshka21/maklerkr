@@ -216,9 +216,15 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        /* Слайдер у картці */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+        }
+
         .slider-box {
             position: relative;
             width: 100%;
@@ -261,14 +267,13 @@
             z-index: 5;
         }
 
-        /* Кнопки перегортання прямо в картці */
         .nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width: 38px;
             height: 38px;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             color: var(--navy);
             border: none;
             border-radius: 50%;
@@ -313,7 +318,7 @@
             line-height: 1.35;
         }
 
-        .card-desc {
+        .card-desc-preview {
             font-size: 13px;
             color: #666;
             margin-bottom: 15px;
@@ -339,7 +344,7 @@
             gap: 10px;
         }
 
-        .btn-fullscreen {
+        .btn-details {
             text-align: center;
             background: var(--light-bg);
             color: var(--navy);
@@ -352,7 +357,7 @@
             transition: 0.3s;
         }
 
-        .btn-fullscreen:hover {
+        .btn-details:hover {
             background: var(--soft-gold);
             color: var(--navy);
         }
@@ -377,51 +382,63 @@
             border-color: var(--soft-gold);
         }
 
-        /* ВЕЛИКЕ ВІКНО ПЕРЕГЛЯДУ (LIGHTBOX) */
+        /* МОДАЛЬНЕ ВІКНО: ПОВНЕ ОПИСАННЯ + ФОТО */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(10, 15, 25, 0.95);
+            background: rgba(10, 15, 25, 0.88);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 3000;
-            user-select: none;
+            padding: 20px;
+            backdrop-filter: blur(4px);
         }
 
         .modal-overlay.open {
             display: flex;
         }
 
-        .modal-content {
+        .modal-card {
             position: relative;
-            max-width: 960px;
-            width: 94%;
-            background: #111;
-            border-radius: 12px;
+            max-width: 860px;
+            width: 100%;
+            max-height: 92vh;
+            background: var(--white);
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            animation: modalFadeIn 0.25s ease-out;
         }
 
-        .modal-header {
-            padding: 14px 20px;
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-top-bar {
             background: var(--navy);
             color: var(--white);
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid var(--soft-gold);
         }
 
-        .modal-header h3 {
-            font-size: 15px;
+        .modal-top-bar h3 {
+            font-size: 16px;
             color: var(--warm-beige);
+            margin: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 80%;
+            max-width: 85%;
         }
 
         .modal-close-btn {
@@ -431,40 +448,54 @@
             font-size: 28px;
             cursor: pointer;
             line-height: 1;
+            transition: color 0.2s;
         }
 
-        .modal-view-area {
+        .modal-close-btn:hover {
+            color: var(--soft-gold);
+        }
+
+        .modal-scroll-body {
+            overflow-y: auto;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+        .modal-slider-section {
             position: relative;
             width: 100%;
-            height: 520px;
-            background: #050505;
+            height: 420px;
+            background: #0d111a;
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
         }
 
-        .modal-view-area img {
+        .modal-slider-section img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            display: block;
         }
 
         .modal-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.3);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.4);
             color: #fff;
             border: none;
             border-radius: 50%;
-            font-size: 24px;
+            font-size: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: 0.2s;
+            z-index: 10;
         }
 
         .modal-nav:hover {
@@ -472,21 +503,139 @@
             color: var(--navy);
         }
 
-        .modal-nav-prev { left: 20px; }
-        .modal-nav-next { right: 20px; }
+        .modal-nav-prev { left: 16px; }
+        .modal-nav-next { right: 16px; }
 
-        .modal-footer {
-            padding: 14px 20px;
-            background: var(--navy);
+        .modal-photo-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .modal-details-container {
+            padding: 25px;
+        }
+
+        .modal-price-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .modal-footer span {
+        .modal-price {
+            font-size: 28px;
+            color: var(--soft-gold);
+            font-weight: 700;
+        }
+
+        .modal-badge {
+            background: var(--navy);
             color: var(--warm-beige);
-            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .modal-title-text {
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 18px;
+            line-height: 1.35;
+        }
+
+        .modal-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            background: var(--light-bg);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 22px;
+            border-left: 4px solid var(--soft-gold);
+        }
+
+        .modal-spec-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-spec-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #777;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .modal-spec-val {
             font-size: 14px;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .modal-desc-heading {
+            font-size: 16px;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 6px;
+        }
+
+        .modal-full-description {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #444;
+            white-space: pre-line;
+            margin-bottom: 25px;
+        }
+
+        .modal-bottom-actions {
+            background: #fff;
+            border-top: 1px solid #eee;
+            padding: 16px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .modal-realtor-info {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .modal-realtor-info strong {
+            color: var(--navy);
+        }
+
+        .modal-cta-btn {
+            background: var(--soft-gold);
+            color: var(--navy);
+            padding: 12px 24px;
+            font-weight: 700;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .modal-cta-btn:hover {
+            background: var(--navy);
+            color: var(--warm-beige);
         }
 
         /* Футер */
@@ -541,8 +690,19 @@
             .filter-panel {
                 padding: 15px;
             }
-            .modal-view-area {
-                height: 320px;
+            .modal-slider-section {
+                height: 260px;
+            }
+            .modal-details-container {
+                padding: 16px;
+            }
+            .modal-bottom-actions {
+                flex-direction: column;
+                text-align: center;
+            }
+            .modal-cta-btn {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -635,21 +795,49 @@
         <div class="cards-grid" id="catalog-container"></div>
     </div>
 
-    <!-- МОДАЛЬНЕ ВІКНО ПОВНОЕКРАННОГО ПЕРЕГЛЯДУ -->
-    <div class="modal-overlay" id="galleryModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Перегляд фотографій</h3>
-                <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+    <!-- ПОВНОЦІННЕ МОДАЛЬНЕ ВІКНО З ДЕТАЛЬНИМ ОПИСОМ ТА ФОТО -->
+    <div class="modal-overlay" id="propertyDetailsModal">
+        <div class="modal-card">
+            <!-- Верхня шапка вікна -->
+            <div class="modal-top-bar">
+                <h3 id="mHeaderTitle">Детальна інформація</h3>
+                <button type="button" class="modal-close-btn" id="modalCloseBtn">&times;</button>
             </div>
-            <div class="modal-view-area">
-                <button class="modal-nav modal-nav-prev" id="modalPrevBtn">&#10094;</button>
-                <img id="modalImg" src="" alt="Фото об'єкта">
-                <button class="modal-nav modal-nav-next" id="modalNextBtn">&#10095;</button>
+
+            <!-- Тіло з прокруткою -->
+            <div class="modal-scroll-body">
+                <!-- Слайдер фотографій -->
+                <div class="modal-slider-section">
+                    <button type="button" class="modal-nav modal-nav-prev" id="mPrevBtn">&#10094;</button>
+                    <img id="mActiveImg" src="" alt="Фото об'єкта">
+                    <button type="button" class="modal-nav modal-nav-next" id="mNextBtn">&#10095;</button>
+                    <span class="modal-photo-counter" id="mPhotoCounter">Фото 1 з 1</span>
+                </div>
+
+                <!-- Блок опису та параметрів -->
+                <div class="modal-details-container">
+                    <div class="modal-price-row">
+                        <div class="modal-price" id="mPriceText">18 000 $</div>
+                        <span class="modal-badge" id="mBadge">Квартира • Саксаганський</span>
+                    </div>
+
+                    <h2 class="modal-title-text" id="mFullTitle">Назва об'єкта</h2>
+
+                    <!-- Сітка характеристик -->
+                    <div class="modal-specs-grid" id="mSpecsGrid"></div>
+
+                    <!-- Повний опис -->
+                    <h4 class="modal-desc-heading">Опис від рієлтора:</h4>
+                    <div class="modal-full-description" id="mFullDesc"></div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <span id="modalCounter">Фото 1 з 1</span>
-                <a href="tel:+380971732450" class="card-call-btn" style="padding: 6px 16px;">📞 Запитати за квартиру</a>
+
+            <!-- Нижня панель швидкого дзвінка -->
+            <div class="modal-bottom-actions">
+                <div class="modal-realtor-info">
+                    Рієлтор: <strong>Андрій Маклер</strong> (Makler KR)
+                </div>
+                <a href="tel:+380971732450" class="modal-cta-btn">📞 Зателефонувати: +380 97 173 24 50</a>
             </div>
         </div>
     </div>
@@ -679,13 +867,14 @@
         </div>
     </footer>
 
-    <!-- НАДІЙНИЙ СКРИПТ ГОЙДАННЯ ФОТО ТА ПАРСИНГУ -->
+    <!-- СКРИПТ: ПАРСИНГ, ФІЛЬТРИ, СЛАЙДЕР ТА ВІКНО ПОВНОГО ОПИСУ -->
     <script>
       const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
       let propertiesData = [];
 
-      let modalPhotosList = [];
-      let modalIndex = 0;
+      // Змінні активного об'єкта для модального вікна
+      let currentModalPhotos = [];
+      let currentModalIndex = 0;
 
       async function fetchAndRender() {
         const counterEl = document.getElementById("catalog-counter");
@@ -737,10 +926,12 @@
             const priceVal = Number(priceEl?.textContent || 0);
             const currency = priceEl?.getAttribute("currency") === "USD" ? "$" : (priceEl?.getAttribute("currency") || "$");
 
-            let desc = item.querySelector("description")?.textContent || "";
-            if (desc.length > 130) desc = desc.substring(0, 130) + "...";
+            // ПОВНИЙ опис без обрізання
+            let fullDesc = item.querySelector("description")?.textContent || "";
+            // Короткий опис для картки
+            let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
-            // Знаходимо всі без винятку URL фотографій
+            // Збираємо всі фото
             const imgNodes = item.querySelectorAll("image_url, photo, picture, image");
             let photos = [];
             imgNodes.forEach(node => {
@@ -756,6 +947,8 @@
 
             const rooms = item.querySelector("room_count")?.textContent || "";
             const area = item.querySelector("area_total")?.textContent || "";
+            const areaLiving = item.querySelector("area_living")?.textContent || "";
+            const areaKitchen = item.querySelector("area_kitchen")?.textContent || "";
             const floor = item.querySelector("floor")?.textContent || "";
             const totalFloors = item.querySelector("total_floors")?.textContent || "";
 
@@ -768,11 +961,14 @@
               title,
               price: priceVal,
               currency,
-              desc,
+              shortDesc,
+              fullDesc,
               photos: photos,
               currentSlide: 0,
               rooms,
               area,
+              areaLiving,
+              areaKitchen,
               floor,
               totalFloors,
               realtyType,
@@ -825,17 +1021,17 @@
                 <span class="card-badge">${typeBadge}</span>
                 <span class="photo-counter">📷 1 / ${item.photos.length}</span>
                 ${item.photos.length > 1 ? `
-                  <button type="button" class="nav-arrow nav-prev">&#10094;</button>
-                  <button type="button" class="nav-arrow nav-next">&#10095;</button>
+                  <button type="button" class="nav-arrow nav-prev" title="Попереднє фото">&#10094;</button>
+                  <button type="button" class="nav-arrow nav-next" title="Наступне фото">&#10095;</button>
                 ` : ''}
             </div>
             <div class="card-content">
                 <div class="card-price">${formattedPrice}</div>
                 <h4 class="card-title">${item.title}</h4>
                 ${specsHtml ? `<div class="card-specs">${specsHtml}</div>` : ''}
-                <p class="card-desc">${item.desc}</p>
+                <p class="card-desc-preview">${item.shortDesc}</p>
                 <div class="card-actions">
-                    <button type="button" class="btn-fullscreen">🔍 Всі фото (${item.photos.length})</button>
+                    <button type="button" class="btn-details">📖 Детальніше</button>
                     <a href="tel:+380971732450" class="card-call-btn">📞 Подзвонити</a>
                 </div>
             </div>
@@ -844,7 +1040,7 @@
         });
       }
 
-      // ЄДИНИЙ ГАРАНТОВАНИЙ ОБРОБНИК КЛІКІВ (Event Delegation)
+      // ЄДИНИЙ ОБРОБНИК КЛІКІВ
       document.getElementById("catalog-container").addEventListener("click", function(e) {
         const card = e.target.closest(".card");
         if (!card) return;
@@ -853,7 +1049,7 @@
         const item = propertiesData.find(p => p.idx === cardId);
         if (!item) return;
 
-        // 1. Клік на стрілку "Попереднє фото"
+        // 1. Стрілка "Назад" у картці
         if (e.target.closest(".nav-prev")) {
           e.preventDefault();
           e.stopPropagation();
@@ -863,7 +1059,7 @@
           return;
         }
 
-        // 2. Клік на стрілку "Наступне фото"
+        // 2. Стрілка "Вперед" у картці
         if (e.target.closest(".nav-next")) {
           e.preventDefault();
           e.stopPropagation();
@@ -873,16 +1069,14 @@
           return;
         }
 
-        // 3. Клік на кнопку "Всі фото" або на саму картинку
-        if (e.target.closest(".btn-fullscreen") || e.target.closest(".card-slider-img")) {
-          e.preventDefault();
-          modalPhotosList = item.photos;
-          modalIndex = item.currentSlide || 0;
-          document.getElementById("modalTitle").textContent = item.title;
-          showModalImage();
-          document.getElementById("galleryModal").classList.add("open");
-          document.body.style.overflow = "hidden";
+        // 3. Якщо клікнули на "Подзвонити" — дозволяємо дзвінок
+        if (e.target.closest(".card-call-btn")) {
+          return;
         }
+
+        // 4. Клік на кнопку "Детальніше", на фото або на будь-яку частину картки — відкриває повний опис
+        e.preventDefault();
+        openPropertyDetailsModal(item);
       });
 
       function updateCardPhoto(cardElement, item) {
@@ -892,43 +1086,77 @@
         if (counter) counter.textContent = `📷 ${item.currentSlide + 1} / ${item.photos.length}`;
       }
 
-      // Функції модального вікна
-      function showModalImage() {
-        const img = document.getElementById("modalImg");
-        const counter = document.getElementById("modalCounter");
-        img.src = modalPhotosList[modalIndex];
-        counter.textContent = `Фото ${modalIndex + 1} з ${modalPhotosList.length}`;
+      // ВІДКРИТТЯ ВІКНА З ПОВНИМ ОПИСОМ ТА ФОТО
+      function openPropertyDetailsModal(item) {
+        currentModalPhotos = item.photos;
+        currentModalIndex = item.currentSlide || 0;
+
+        document.getElementById("mHeaderTitle").textContent = item.title;
+        document.getElementById("mFullTitle").textContent = item.title;
+        
+        const formattedPrice = item.price > 0 ? `${item.price.toLocaleString()} ${item.currency}` : "Ціна договірна";
+        document.getElementById("mPriceText").textContent = formattedPrice;
+
+        const badgeText = item.districtDisplay ? `${item.realtyType} • ${item.districtDisplay}` : item.realtyType;
+        document.getElementById("mBadge").textContent = badgeText;
+
+        // Заповнення характеристик
+        const specsGrid = document.getElementById("mSpecsGrid");
+        specsGrid.innerHTML = `
+          ${item.rooms ? `<div class="modal-spec-box"><span class="modal-spec-label">Кімнат</span><span class="modal-spec-val">${item.rooms}</span></div>` : ''}
+          ${item.area ? `<div class="modal-spec-box"><span class="modal-spec-label">Загальна площа</span><span class="modal-spec-val">${item.area} м²</span></div>` : ''}
+          ${item.areaLiving ? `<div class="modal-spec-box"><span class="modal-spec-label">Житлова</span><span class="modal-spec-val">${item.areaLiving} м²</span></div>` : ''}
+          ${item.areaKitchen ? `<div class="modal-spec-box"><span class="modal-spec-label">Кухня</span><span class="modal-spec-val">${item.areaKitchen} м²</span></div>` : ''}
+          ${item.floor ? `<div class="modal-spec-box"><span class="modal-spec-label">Поверх</span><span class="modal-spec-val">${item.floor} з ${item.totalFloors || '-'}</span></div>` : ''}
+          ${item.districtDisplay ? `<div class="modal-spec-box"><span class="modal-spec-label">Район</span><span class="modal-spec-val">${item.districtDisplay}</span></div>` : ''}
+        `;
+
+        // Заповнення повного опису
+        document.getElementById("mFullDesc").textContent = item.fullDesc;
+
+        // Показ фото
+        updateModalSliderImage();
+
+        document.getElementById("propertyDetailsModal").classList.add("open");
+        document.body.style.overflow = "hidden"; // блокуємо прокрутку сторінки позаду
       }
 
-      document.getElementById("modalPrevBtn").addEventListener("click", function(e) {
+      function updateModalSliderImage() {
+        const img = document.getElementById("mActiveImg");
+        const counter = document.getElementById("mPhotoCounter");
+        img.src = currentModalPhotos[currentModalIndex];
+        counter.textContent = `Фото ${currentModalIndex + 1} з ${currentModalPhotos.length}`;
+      }
+
+      document.getElementById("mPrevBtn").addEventListener("click", function(e) {
         e.stopPropagation();
-        modalIndex--;
-        if (modalIndex < 0) modalIndex = modalPhotosList.length - 1;
-        showModalImage();
+        currentModalIndex--;
+        if (currentModalIndex < 0) currentModalIndex = currentModalPhotos.length - 1;
+        updateModalSliderImage();
       });
 
-      document.getElementById("modalNextBtn").addEventListener("click", function(e) {
+      document.getElementById("mNextBtn").addEventListener("click", function(e) {
         e.stopPropagation();
-        modalIndex++;
-        if (modalIndex >= modalPhotosList.length) modalIndex = 0;
-        showModalImage();
+        currentModalIndex++;
+        if (currentModalIndex >= currentModalPhotos.length) currentModalIndex = 0;
+        updateModalSliderImage();
       });
 
       function closeModal() {
-        document.getElementById("galleryModal").classList.remove("open");
+        document.getElementById("propertyDetailsModal").classList.remove("open");
         document.body.style.overflow = "auto";
       }
 
       document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
-      document.getElementById("galleryModal").addEventListener("click", function(e) {
-        if (e.target.id === "galleryModal") closeModal();
+      document.getElementById("propertyDetailsModal").addEventListener("click", function(e) {
+        if (e.target.id === "propertyDetailsModal") closeModal();
       });
 
       document.addEventListener("keydown", function(e) {
-        const modal = document.getElementById("galleryModal");
+        const modal = document.getElementById("propertyDetailsModal");
         if (!modal.classList.contains("open")) return;
-        if (e.key === "ArrowLeft") document.getElementById("modalPrevBtn").click();
-        if (e.key === "ArrowRight") document.getElementById("modalNextBtn").click();
+        if (e.key === "ArrowLeft") document.getElementById("mPrevBtn").click();
+        if (e.key === "ArrowRight") document.getElementById("mNextBtn").click();
         if (e.key === "Escape") closeModal();
       });
 
