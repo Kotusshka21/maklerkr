@@ -257,12 +257,15 @@
             right: 12px;
             background: #E63946;
             color: #fff;
-            padding: 4px 10px;
+            padding: 5px 11px;
             border-radius: 4px;
             font-size: 11px;
             font-weight: 700;
             z-index: 5;
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .photo-counter {
@@ -565,19 +568,30 @@
             line-height: 1.35;
         }
 
-        /* Блок відеоплеєра */
+        /* Блок відео */
         .modal-video-box {
             margin-bottom: 25px;
             background: #000;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
             display: none;
+        }
+
+        .modal-video-title {
+            background: #181d2a;
+            color: var(--warm-beige);
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .modal-video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
         }
@@ -828,7 +842,7 @@
         <div class="cards-grid" id="catalog-container"></div>
     </div>
 
-    <!-- Модальне вікно повного опису + відео -->
+    <!-- Модальне вікно з повним описом та відео -->
     <div class="modal-overlay" id="propertyDetailsModal">
         <div class="modal-card">
             <div class="modal-top-bar">
@@ -837,7 +851,6 @@
             </div>
 
             <div class="modal-scroll-body">
-                <!-- Слайдер фотографій -->
                 <div class="modal-slider-section">
                     <button type="button" class="modal-nav modal-nav-prev" id="mPrevBtn">&#10094;</button>
                     <img id="mActiveImg" src="" alt="Фото об'єкта">
@@ -853,17 +866,16 @@
 
                     <h2 class="modal-title-text" id="mFullTitle">Назва об'єкта</h2>
 
-                    <!-- Блок вбудованого відео -->
+                    <!-- Вбудоване відео -->
                     <div class="modal-video-box" id="mVideoContainer">
+                        <div class="modal-video-title">🎥 Відеоогляд квартири</div>
                         <div class="modal-video-wrapper">
                             <iframe id="mVideoFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
                         </div>
                     </div>
 
-                    <!-- Сітка параметрів -->
                     <div class="modal-specs-grid" id="mSpecsGrid"></div>
 
-                    <!-- Повний опис -->
                     <h4 class="modal-desc-heading">Опис від рієлтора:</h4>
                     <div class="modal-full-description" id="mFullDesc"></div>
                 </div>
@@ -902,26 +914,25 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ: ЧИТАННЯ XML З ПІДТРИМКОЮ ВІДЕО -->
+    <!-- СКРИПТ: ТОЧНИЙ ПАРСИНГ ХАРАКТЕРИСТИК ІЗ ПОЛЕМ "ВИДЕО" -->
     <script>
       let propertiesData = [];
       let currentModalPhotos = [];
       let currentModalIndex = 0;
 
-      // Перетворює будь-яке посилання на YouTube у формат для вбудовування
-      function formatYouTubeUrl(url) {
+      function convertToYouTubeEmbed(url) {
         if (!url) return "";
         let videoId = "";
         if (url.includes("youtu.be/")) {
-          videoId = url.split("youtu.be/")[1].split("?")[0];
+          videoId = url.split("youtu.be/")[1].split(/[?&#]/)[0];
         } else if (url.includes("watch?v=")) {
           videoId = url.split("watch?v=")[1].split("&")[0];
         } else if (url.includes("shorts/")) {
-          videoId = url.split("shorts/")[1].split("?")[0];
+          videoId = url.split("shorts/")[1].split(/[?&#]/)[0];
         } else if (url.includes("embed/")) {
-          return url;
+          videoId = url.split("embed/")[1].split(/[?&#]/)[0];
         }
-        return videoId ? "https://www.youtube.com/embed/" + videoId : url;
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
       }
 
       async function fetchAndRender() {
@@ -957,10 +968,31 @@
             let fullDesc = item.querySelector("description")?.textContent || "";
             let shortDesc = fullDesc.length > 120 ? fullDesc.substring(0, 120) + "..." : fullDesc;
 
-            // Зчитуємо посилання на відео з CRM
-            const videoUrl = item.querySelector("video, video_url, youtube, video_link")?.textContent.trim() || "";
+            // 1. Пошук відео у блоці <property label="видео"> або <property label="відео">
+            let videoRaw = "";
+            const propNodes = item.querySelectorAll("properties > property");
+            propNodes.forEach(prop => {
+              const label = (prop.getAttribute("label") || "").toLowerCase().trim();
+              if (label === "видео" || label === "відео" || label === "video" || label === "youtube") {
+                videoRaw = prop.textContent.trim();
+              }
+            });
 
-            // Зчитуємо всі фото
+            // 2. Якщо в properties немає — перевіряємо прямі теги або опис
+            if (!videoRaw) {
+              videoRaw = item.querySelector("video, video_url, youtube")?.textContent.trim() || "";
+            }
+            if (!videoRaw) {
+              const ytMatch = fullDesc.match(/(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+[^\s]*)/i);
+              if (ytMatch) {
+                videoRaw = ytMatch[0];
+                fullDesc = fullDesc.replace(videoRaw, "").trim();
+              }
+            }
+
+            const videoEmbedUrl = convertToYouTubeEmbed(videoRaw);
+
+            // Зчитуємо фотографії
             const imgNodes = item.querySelectorAll("images > image_url, image_url, photo");
             let photos = [];
             imgNodes.forEach(node => {
@@ -992,7 +1024,7 @@
               currency,
               shortDesc,
               fullDesc,
-              videoUrl,
+              videoUrl: videoEmbedUrl,
               photos,
               currentSlide: 0,
               rooms,
@@ -1049,7 +1081,7 @@
             <div class="slider-box">
                 <img class="card-slider-img" src="${item.photos[0]}" alt="${item.title}">
                 <span class="card-badge">${typeBadge}</span>
-                ${item.videoUrl ? `<span class="video-badge">🎥 Є відео</span>` : ''}
+                ${item.videoUrl ? `<span class="video-badge">▶️ Є відео</span>` : ''}
                 <span class="photo-counter">📷 1 / ${item.photos.length}</span>
                 ${item.photos.length > 1 ? `
                   <button type="button" class="nav-arrow nav-prev" title="Попереднє фото">&#10094;</button>
@@ -1123,11 +1155,11 @@
         const badgeText = item.districtDisplay ? `${item.realtyType} • ${item.districtDisplay}` : item.realtyType;
         document.getElementById("mBadge").textContent = badgeText;
 
-        // Встановлення відеоплеєра, якщо є посилання
+        // Вбудовуємо відео, якщо воно є
         const videoBox = document.getElementById("mVideoContainer");
         const videoFrame = document.getElementById("mVideoFrame");
         if (item.videoUrl) {
-          videoFrame.src = formatYouTubeUrl(item.videoUrl);
+          videoFrame.src = item.videoUrl;
           videoBox.style.display = "block";
         } else {
           videoFrame.src = "";
@@ -1176,7 +1208,6 @@
       function closeModal() {
         document.getElementById("propertyDetailsModal").classList.remove("open");
         document.body.style.overflow = "auto";
-        // Зупиняємо відео при закритті модального вікна
         document.getElementById("mVideoFrame").src = "";
       }
 
