@@ -927,30 +927,49 @@ ID 52</description>
         <created_at>2026-06-24T13:16:54+03:00</created_at>
         <updated_at>2026-08-14T17:34:48+03:00</updated_at>
     </item>
-    <item internal-id="60">
+    <item internal-id="82">
         <status>active</status>
         <is_new_building>0</is_new_building>
-        <article>59</article>
-        <title>Продаж 3-к квартира 129 квартал вул Кропивницького поруч Зарічний</title>
-        <description>Кривий Ріг. Продається видова 3 кімнатна квартира з ремонтом на 129 кварталі в 9-ти поверхівці.&#13;
+        <article>80</article>
+        <title>Продажа / Квартира / ул. Электрозаводская, Покровский, Кривой Рог</title>
+        <description>Продається затишна 3-к квартира повністю з меблями&#13;
 &#13;
-Стан: Гарний житловий, вікна та труби м/п, поміняна проводка, нова сантехніка, санвузол у кахлі (тепла підлога). Залізні вхідні двері, поміняні міжкімнатні двері, підлога лінолеум та плитка, балкон засклений та обшитий м/п.&#13;
+Покровський район, вул. Електрозаводська, поруч Зарічний&#13;
 &#13;
-Кондиціонер. Бойлер. Квартира утеплена. Криша зроблена.&#13;
+Комфортний 5 поверх із 9-ти&#13;
 &#13;
-Лічильники на воду, газ, світло.&#13;
-Теплолічильник на будинку.&#13;
-Поруч: Є все для комфортного життя.&#13;
-Супермаркет АТБ та безліч невеликих магазинів.&#13;
-Гарна транспортна розв'язка, поблизу зупинки.&#13;
-Найекологічніший район нашого міста. Поруч річка та паркова зона.&#13;
+Світла і тепла, не кутова&#13;
 &#13;
-Боргів та проблем немає.&#13;
+Кімнати: 3, одна прохідна, квартира на дві сторони&#13;
+&#13;
+Санвузол: Роздільний, повністю в плитці&#13;
+&#13;
+Балкон: є балкон та лоджія&#13;
+&#13;
+Ремонт: вікна та труби частково м/п, сантехніка в хорошому стані, двері поміняні&#13;
+&#13;
+Підлога: Лінолеум та плитка&#13;
+&#13;
+Радіатори: чугунні&#13;
+&#13;
+Установлені лічильники на воду, і електрику&#13;
+&#13;
+Теплолічильник в будинку&#13;
+&#13;
+Розташування:&#13;
+&#13;
+Поруч дитячий садок, школа&#13;
+&#13;
+В пішій доступності: поліклініка, АТБ, супермаркет Терра, Варус, магазини&#13;
+&#13;
+Зупинки громадського транспорту, станція метро, річка&#13;
+&#13;
+Найекологічніший район нашого міста.&#13;
 &#13;
 Зацікавились? Телефонуйте!&#13;
 &#13;
-Запрошую до співпраці власників нерухомості! Продаю швидко та вигідно.&#13;
-ID 59</description>
+ID 80&#13;
+</description>
         <category value="1">Жилая недвижимость</category>
         <realty_type value="1">Квартира</realty_type>
         <deal value="1">Продажа</deal>
@@ -961,56 +980,53 @@ ID 59</description>
             <city value="1757">Кривой Рог</city>
             <borough value="1757">Кривой Рог</borough>
             <district value="7886">Покровский</district>
-            <street value="7598">Кропивницкого</street>
+            <street value="7544">Электрозаводская</street>
             <street_type value="street">улица</street_type>
-            <map_lat>48.0106914</map_lat>
-            <map_lng>33.4886234</map_lng>
-            <landmark>129 квартал</landmark>
+            <map_lat>47.9962348</map_lat>
+            <map_lng>33.4826833</map_lng>
+            <landmark>заречный</landmark>
             <region_uk value="1658">Дніпропетровська область</region_uk>
             <county_uk value="1753" visible="1">Криворізька міськрада</county_uk>
             <city_uk value="1757">Кривий Ріг</city_uk>
             <borough_uk value="Кривой Рог">Кривий Ріг</borough_uk>
             <district_uk value="7886">Покровський</district_uk>
-            <street_uk value="7598">Кропивницького</street_uk>
+            <street_uk value="7544">Електрозаводська</street_uk>
             <street_type_uk value="street">вулиця</street_type_uk>
         </location>
         <total_floors>9</total_floors>
-        <floor>9</floor>
-        <area_total>57</area_total>
+        <floor>5</floor>
+        <area_total>62</area_total>
         <area_living>40</area_living>
-        <area_kitchen>9</area_kitchen>
+        <area_kitchen>7</area_kitchen>
         <room_count>3</room_count>
-        <price type="per_object" currency="USD">26500</price>
+        <price type="per_object" currency="USD">19600</price>
         <images>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/5dc7127a1bf15ea796e8ac11650a6611.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/bd7fd5cd39ab5ffa4d82c44f3279ba2e.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/4d6e740dc71a3873de9e39694abbc786.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/2d104cdf9c9967a0a1e7a36c8d8bf0cb.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/04229bef7c81d0737aed07912f8be59c.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/13918d60adbdca573329e21bcc95864c.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/9a3499ecbb049bc955b0858c9b395439.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/9c158f4e64d291ae8714cd1159653ffb.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/d7a380b85069011470491984749128cb.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/0d4b2e0a090fa91e4567d6f526f62552.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/14f9aaaa4dd2374f5c5728f88914d52e.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/919fc924bc9136fd85626c57553f76ff.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/f23d1602b4147d9cfa2ad5a14e05b7c1.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/21e414c41b1205c1b8d4cd5e45ce682c.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/493e29eff0f2b0df3b9b279f5d0ed5f9.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/9f228c75fa8c957c21761efff648c9d6.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/3c64c63cc5e8fff36e2ba6b621e75615.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/ffa7437ef42747e84b4983e04ea801d0.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/d5ea4de7f2e5fe7fe51f1094357f6da7.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/685480225072636dee6c2dc548d743ed.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/f8e060aea44d10301fb9594b4da85afc.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/8634f467ce6d852209306baf5a1cbd1c.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/a9f655ef2d8354439e455372ae087f14.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/e65aec09e1adc7c7f39204e65de68196.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/5c1cfc3173d6b7fa69f160d161bd1dce.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/c7f734834c0c5ee1a3b6d171551e7d84.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/bf738a455238720867eda8285591e1ae.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/5630034c6de1a4c8b694d0eeed5c3b8f.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/26cdc4b4c33d7aa373b9bc1050ea09e7.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/67e0a9febcda5d9eaf13e4af43fca032.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/82d0b9b4a266045464f74bd3c2c1d565.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/677cae8ef4175ca7bf3b5de9710ed9ec.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/cdd8b50c7385134e332f41176a9b2c89.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/7d04bc54036b8fa28222d111f2a71e79.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/936d28d466d7af12d9696288b638460c.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/947ed33771261509bf4e75e6e15dc3bf.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/6d801df42033288dfa1bf963bc1af8a0.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/c690a0385cfc9b4d4554e277537fa819.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/1f9afa65ef75094fbc16a0de950fbcc9.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/3c94c13b1f0af28dfa1f37878adb6e7d.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/052757b75c066d5a3a582dd0e3a7fa9f.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/d921362defea258827f7045933dad3bb.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/1ce550b6dd964f61f9a36b5710ef8337.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/00ac75261a4363ad0b4f40d292b365bf.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/86c8639837bef0407b73c6d3fd0709a9.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/b0aa115a50034a749e90d01031226e44.jpg</image_url>
         </images>
         <properties>
             <property attribute="property_2" label="Газ">Есть</property>
             <property attribute="property_18" label="Ремонт">косметический ремонт</property>
-            <property attribute="property_44" label="тип дополнительный">в рекламе</property>
             <property attribute="property_52" label="Отопление">централизованное</property>
             <property attribute="property_59" label="ексклюзив">Да</property>
         </properties>
@@ -1022,9 +1038,9 @@ ID 59</description>
             </phones>
         </user>
         <tags>
-            <tag>эксклюзив</tag>
+            <tag>заречный</tag>
         </tags>
-        <created_at>2026-06-26T13:07:11+03:00</created_at>
-        <updated_at>2026-08-14T19:29:43+03:00</updated_at>
+        <created_at>2026-07-09T13:11:04+03:00</created_at>
+        <updated_at>2026-09-07T12:40:43+03:00</updated_at>
     </item>
 </response>
