@@ -3,7 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO: Основні пошукові мета-теги -->
     <title>Makler KR — Рієлтор №1 у Кривому Розі | Андрій Маклер</title>
+    <meta name="description" content="Купівля, продаж та оренда квартир і будинків у Кривому Розі. Повний юридичний супровід, перевірка документів, пряма база об'єктів. Рієлтор №1 — Андрій Маклер.">
+    <meta name="keywords" content="нерухомість Кривий Ріг, купити квартиру Кривий Ріг, рієлтор Кривий Ріг, агентство нерухомості Кривий Ріг, Makler KR">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://kotusshka21.github.io/maklerkr/">
+
+    <!-- SEO: Open Graph для Viber, Telegram, Instagram, Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kotusshka21.github.io/maklerkr/">
+    <meta property="og:title" content="Makler KR — Рієлтор №1 у Кривому Розі | Андрій Маклер">
+    <meta property="og:description" content="Безпечний та швидкий продаж нерухомості, вигідний підбір квартир і будинків під ваш бюджет у Кривому Розі.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80">
+
+    <!-- SEO: Структуровані дані Schema.org для Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": "Makler KR — Агентство нерухомості",
+      "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+      "url": "https://kotusshka21.github.io/maklerkr/",
+      "telephone": "+380971732450",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Кривий Ріг",
+        "addressCountry": "UA"
+      },
+      "areaServed": "Кривий Ріг"
+    }
+    </script>
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -51,14 +84,19 @@
         }
 
         .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
         .logo {
             text-decoration: none;
             color: var(--white);
+            flex-shrink: 0;
         }
 
         .logo h2 {
@@ -77,14 +115,23 @@
         .nav-links {
             display: flex;
             align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 14px;
         }
 
         nav a {
             color: var(--white);
             text-decoration: none;
-            margin-left: 20px;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
+            white-space: nowrap;
             transition: color 0.3s ease;
         }
 
@@ -93,13 +140,18 @@
         }
 
         .header-phone {
-            margin-left: 25px;
             background-color: var(--soft-gold);
             color: var(--navy) !important;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 4px;
             font-weight: 700 !important;
-            display: inline-block;
+            font-size: 13px;
+            white-space: nowrap !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-decoration: none;
         }
 
         .header-phone:hover {
@@ -504,24 +556,20 @@
             font-size: 13px;
         }
 
-        @media (max-width: 768px) {
-            .hero-grid, .blog-grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 992px) {
             .nav-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
             }
-            .nav-links {
+            nav {
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            nav a {
-                margin: 5px 8px;
-            }
-            .header-phone {
-                margin-left: 0;
-                margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-grid, .blog-grid {
+                grid-template-columns: 1fr;
             }
             .form-card {
                 padding: 25px 15px;
@@ -533,7 +581,7 @@
 
     <!-- Шапка сайту -->
     <header>
-        <div class="container nav-container">
+        <div class="nav-container">
             <a href="index.html" class="logo">
                 <h2>Makler KR</h2>
                 <span>Агентство нерухомості</span>
@@ -576,7 +624,7 @@
         </div>
     </section>
 
-    <!-- Каталог нерухомості (Останні 3 надходження + перехід на сторінку пошуку) -->
+    <!-- Каталог нерухомості -->
     <section id="properties">
         <div class="container">
             <div class="section-title">
@@ -585,7 +633,6 @@
                 <p id="crm-status" style="margin-top: 10px; font-size: 13px; color: #888;">Актуальні пропозиції з бази CRM</p>
             </div>
             <div class="cards-grid" id="crm-properties-container">
-                <!-- Картка за замовчуванням (з вашого реального фіда) -->
                 <div class="card">
                     <div class="card-img-holder">
                         <img src="https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/0cdedd2ff01c483b14ea45c64176df2a.jpg" alt="1-к квартира, вул. Курчатова">
@@ -616,8 +663,6 @@
 
             <div class="form-card">
                 <form id="leadForm" onsubmit="event.preventDefault(); alert('Дякуємо! Ваша заявка успішно надіслана. Андрій Маклер зателефонує вам найближчим часом.');">
-                    
-                    <!-- Вибір ролі -->
                     <div class="form-group">
                         <label>Хто ви?</label>
                         <div class="radio-options">
@@ -632,19 +677,16 @@
                         </div>
                     </div>
 
-                    <!-- Ваше ім'я -->
                     <div class="form-group">
                         <label for="client_name">Ваше ім'я</label>
                         <input type="text" id="client_name" name="name" class="form-control" placeholder="Як до вас звертатися?" required>
                     </div>
 
-                    <!-- Номер телефону -->
                     <div class="form-group">
                         <label for="client_phone">Номер телефону *</label>
                         <input type="tel" id="client_phone" name="phone" class="form-control" placeholder="+38 (0XX) XXX-XX-XX" required>
                     </div>
 
-                    <!-- Район міста -->
                     <div class="form-group">
                         <label for="district">Бажаний район у Кривому Розі</label>
                         <select id="district" name="district" class="form-control">
@@ -659,7 +701,6 @@
                         </select>
                     </div>
 
-                    <!-- Опис квартири -->
                     <div class="form-group">
                         <label for="description">Короткий опис квартири (наявної або бажаної)</label>
                         <textarea id="description" name="comment" class="form-control" placeholder="Наприклад: 2-кімнатна, з ремонтом, поверх не перший/не останній, бюджет до $30 000 або параметри вашого житла для продажу..."></textarea>
@@ -761,41 +802,19 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ З REALTSOFT XML -->
+    <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ -->
     <script>
-      const REALTSOFT_FEED_URL = "https://crm-makler-kr.realtsoft.net/feed/xml?id=5";
+      const FEED_FILE_URL = "feed.xml?v=" + new Date().getTime();
 
       async function fetchRealsoftObjects() {
         const statusEl = document.getElementById("crm-status");
         const container = document.getElementById("crm-properties-container");
 
-        const gateways = [
-          "https://corsproxy.io/?" + encodeURIComponent(REALTSOFT_FEED_URL),
-          "https://api.allorigins.win/raw?url=" + encodeURIComponent(REALTSOFT_FEED_URL),
-          REALTSOFT_FEED_URL
-        ];
-
-        let xmlText = null;
-
-        for (const url of gateways) {
-          try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 4000);
-            const res = await fetch(url, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (res.ok) {
-              const text = await res.text();
-              if (text && text.includes("<item")) {
-                xmlText = text;
-                break;
-              }
-            }
-          } catch (err) {}
-        }
-
-        if (!xmlText) return;
-
         try {
+          const res = await fetch(FEED_FILE_URL);
+          if (!res.ok) return;
+
+          const xmlText = await res.text();
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
           const items = xmlDoc.querySelectorAll("item");
@@ -803,7 +822,6 @@
           if (!items || items.length === 0) return;
 
           container.innerHTML = "";
-
           const displayItems = Array.from(items).slice(0, 3);
 
           displayItems.forEach(item => {
@@ -820,7 +838,7 @@
             let desc = item.querySelector("description")?.textContent || "";
             if (desc.length > 120) desc = desc.substring(0, 120) + "...";
 
-            let photoUrl = item.querySelector("image_url")?.textContent;
+            let photoUrl = item.querySelector("images > image_url, image_url, photo")?.textContent;
             if (!photoUrl || !photoUrl.startsWith("http")) {
               photoUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80";
             }
@@ -849,7 +867,7 @@
           if (statusEl) statusEl.textContent = `Останні актуальні пропозиції з CRM`;
 
         } catch (e) {
-          console.error("Помилка розбору XML:", e);
+          console.error("Помилка:", e);
         }
       }
 
@@ -857,4 +875,3 @@
     </script>
 </body>
 </html>
-
