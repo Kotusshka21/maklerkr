@@ -1864,6 +1864,96 @@ ID 90</description>
         <created_at>2026-07-25T19:47:32+03:00</created_at>
         <updated_at>2026-08-09T21:07:38+03:00</updated_at>
     </item>
+    <item internal-id="98">
+        <status>active</status>
+        <is_new_building>0</is_new_building>
+        <article>95</article>
+        <title>Продається  3х кімнатна квартира з ремонтом на мкр Гірницький</title>
+        <description> Простора 3-кімнатна квартира на м-ні Гірницький - готова до комфортного життя!&#13;
+&#13;
+Пропонується до продажу затишна трикімнатна квартира загальною площею 66 м², розташована на 5-му поверсі 9-поверхового будинку.&#13;
+&#13;
+Продумане планування забезпечує максимальний комфорт: усі кімнати ізольовані.&#13;
+ Світла вітальня облаштована шкіряним диваном і кріслами, а також має вихід на лоджію з місткою шафою.&#13;
+&#13;
+Дві окремі спальні повністю готові до використання. Перша обладнана великим двоспальним ліжком, місткими шафами та виходом на простору лоджію з ламінованою підлогою й додатковими місцями для зберігання. Друга спальня укомплектована розкладним диваном і шафою для одягу. Стіни житлових кімнат і коридору оздоблені якісними шпалерами.&#13;
+&#13;
+Кухня площею 9 м² повністю мебльована та оснащена всією необхідною технікою: варильною поверхнею, духовою шафою, витяжкою, двокамерним холодильником, повнорозмірною посудомийною машиною та мікрохвильовою піччю. Робочу зону оформлено сучасним скіналі із загартованого скла. Для чистої питної води встановлена система зворотного осмосу.&#13;
+&#13;
+У квартирі виконано якісне оздоблення: на кухні та у ванній кімнаті покладено плитку, у житлових кімнатах, коридорі й лоджіях — ламінат. Натяжні стелі створюють сучасний вигляд інтер'єру. Встановлені металопластикові вікна з якісними склопакетами KBE.&#13;
+&#13;
+Санвузол роздільний, облицьований плиткою, сантехніка повністю справна. Новим власникам залишається пральна машина.&#13;
+&#13;
+Оселя доглянута, тепла, світла та охайна. Квартира не потребує жодних додаткових вкладень - можна одразу заїжджати та жити. Під'їзд чистий, будинок доглянутий, сусіди спокійні та привітні.&#13;
+&#13;
+Локація - одна з головних переваг. У кількох хвилинах ходьби знаходяться зупинки громадського транспорту, школи, дитячі садки, ринок, супермаркети, продуктові магазини, поштові відділення та банківські установи. Усе необхідне для комфортного повсякденного життя розташоване у пішій доступності.&#13;
+&#13;
+ Квартиру можна придбати за державною програмою «єВідновлення».&#13;
+ID 95</description>
+        <category value="1">Жилая недвижимость</category>
+        <realty_type value="1">Квартира</realty_type>
+        <deal value="1">Продажа</deal>
+        <location>
+            <country value="1">Україна</country>
+            <region value="1658">Днепропетровская область</region>
+            <county value="1753">Криворожский горсовет</county>
+            <city value="1757">Кривой Рог</city>
+            <borough value="1757">Кривой Рог</borough>
+            <district value="7887">Саксаганский</district>
+            <street value="14367">Горняцкий микрорайон</street>
+            <street_type value="street">улица</street_type>
+            <map_lat>47.9657305</map_lat>
+            <map_lng>33.4543096</map_lng>
+            <landmark>горняцкий</landmark>
+            <region_uk value="1658">Дніпропетровська область</region_uk>
+            <county_uk value="1753" visible="1">Криворізька міськрада</county_uk>
+            <city_uk value="1757">Кривий Ріг</city_uk>
+            <borough_uk value="Кривой Рог">Кривий Ріг</borough_uk>
+            <district_uk value="7887">Саксаганський</district_uk>
+            <street_uk value="14367">Гірницький мікрорайон</street_uk>
+            <street_type_uk value="street">вулиця</street_type_uk>
+        </location>
+        <total_floors>9</total_floors>
+        <floor>6</floor>
+        <area_total>66</area_total>
+        <area_living>40</area_living>
+        <area_kitchen>9</area_kitchen>
+        <room_count>3</room_count>
+        <price type="per_object" currency="USD">48000</price>
+        <images>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/da0a7e05e89c882a4db19328bf3a2f84.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/1b642c86f49a3bbe940f47bfeae75f52.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/dfb6bb5a6e798653255a0cb1c9326dcb.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/4ee19b81ba8f84d643be133efcf36baa.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/82be47f0a56cc14ca1d419003c3e0053.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/23412384d447e230e0cba1c9c2cba34a.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/eefc4af97ceca2c4dff9a5a4d14935f1.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/2d7c8668ec8a586a88bade7f09394e4a.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/cb2bafdda2ae22ad17b99ef90c0635f8.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/51446c2ff30fbb8a71cbb0b2c8d4bc49.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/6313a7124d4cb74e9815819f3163fbe2.jpg</image_url>
+            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/9219b2e74d9920446928f313ec43cdc1.jpg</image_url>
+        </images>
+        <properties>
+            <property attribute="property_2" label="Газ">Есть</property>
+            <property attribute="property_18" label="Ремонт">евроремонт</property>
+            <property attribute="property_44" label="тип дополнительный">в рекламе</property>
+            <property attribute="property_51" label="дополнительно">теневая база</property>
+            <property attribute="property_52" label="Отопление">централизованное</property>
+        </properties>
+        <user>
+            <email>proekt6@i.ua</email>
+            <name>Андрей</name>
+            <phones>
+                <phone>380971732450</phone>
+            </phones>
+        </user>
+        <tags>
+            <tag>горняцкий</tag>
+        </tags>
+        <created_at>2026-07-26T16:05:56+03:00</created_at>
+        <updated_at>2026-09-09T13:37:31+03:00</updated_at>
+    </item>
     <item internal-id="106">
         <status>active</status>
         <is_new_building>0</is_new_building>
@@ -2229,95 +2319,5 @@ ID 82&#13;
         </tags>
         <created_at>2026-07-14T17:37:54+03:00</created_at>
         <updated_at>2026-09-08T21:51:43+03:00</updated_at>
-    </item>
-    <item internal-id="98">
-        <status>active</status>
-        <is_new_building>0</is_new_building>
-        <article>95</article>
-        <title>Продається  3х кімнатна квартира з ремонтом на мкр Гірницький</title>
-        <description> Простора 3-кімнатна квартира на м-ні Гірницький - готова до комфортного життя!&#13;
-&#13;
-Пропонується до продажу затишна трикімнатна квартира загальною площею 66 м², розташована на 5-му поверсі 9-поверхового будинку.&#13;
-&#13;
-Продумане планування забезпечує максимальний комфорт: усі кімнати ізольовані.&#13;
- Світла вітальня облаштована шкіряним диваном і кріслами, а також має вихід на лоджію з місткою шафою.&#13;
-&#13;
-Дві окремі спальні повністю готові до використання. Перша обладнана великим двоспальним ліжком, місткими шафами та виходом на простору лоджію з ламінованою підлогою й додатковими місцями для зберігання. Друга спальня укомплектована розкладним диваном і шафою для одягу. Стіни житлових кімнат і коридору оздоблені якісними шпалерами.&#13;
-&#13;
-Кухня площею 9 м² повністю мебльована та оснащена всією необхідною технікою: варильною поверхнею, духовою шафою, витяжкою, двокамерним холодильником, повнорозмірною посудомийною машиною та мікрохвильовою піччю. Робочу зону оформлено сучасним скіналі із загартованого скла. Для чистої питної води встановлена система зворотного осмосу.&#13;
-&#13;
-У квартирі виконано якісне оздоблення: на кухні та у ванній кімнаті покладено плитку, у житлових кімнатах, коридорі й лоджіях — ламінат. Натяжні стелі створюють сучасний вигляд інтер'єру. Встановлені металопластикові вікна з якісними склопакетами KBE.&#13;
-&#13;
-Санвузол роздільний, облицьований плиткою, сантехніка повністю справна. Новим власникам залишається пральна машина.&#13;
-&#13;
-Оселя доглянута, тепла, світла та охайна. Квартира не потребує жодних додаткових вкладень - можна одразу заїжджати та жити. Під'їзд чистий, будинок доглянутий, сусіди спокійні та привітні.&#13;
-&#13;
-Локація - одна з головних переваг. У кількох хвилинах ходьби знаходяться зупинки громадського транспорту, школи, дитячі садки, ринок, супермаркети, продуктові магазини, поштові відділення та банківські установи. Усе необхідне для комфортного повсякденного життя розташоване у пішій доступності.&#13;
-&#13;
- Квартиру можна придбати за державною програмою «єВідновлення».&#13;
-ID 95</description>
-        <category value="1">Жилая недвижимость</category>
-        <realty_type value="1">Квартира</realty_type>
-        <deal value="1">Продажа</deal>
-        <location>
-            <country value="1">Україна</country>
-            <region value="1658">Днепропетровская область</region>
-            <county value="1753">Криворожский горсовет</county>
-            <city value="1757">Кривой Рог</city>
-            <borough value="1757">Кривой Рог</borough>
-            <district value="7887">Саксаганский</district>
-            <street value="14367">Горняцкий микрорайон</street>
-            <street_type value="street">улица</street_type>
-            <map_lat>47.9657305</map_lat>
-            <map_lng>33.4543096</map_lng>
-            <landmark>горняцкий</landmark>
-            <region_uk value="1658">Дніпропетровська область</region_uk>
-            <county_uk value="1753" visible="1">Криворізька міськрада</county_uk>
-            <city_uk value="1757">Кривий Ріг</city_uk>
-            <borough_uk value="Кривой Рог">Кривий Ріг</borough_uk>
-            <district_uk value="7887">Саксаганський</district_uk>
-            <street_uk value="14367">Гірницький мікрорайон</street_uk>
-            <street_type_uk value="street">вулиця</street_type_uk>
-        </location>
-        <total_floors>9</total_floors>
-        <floor>6</floor>
-        <area_total>66</area_total>
-        <area_living>40</area_living>
-        <area_kitchen>9</area_kitchen>
-        <room_count>3</room_count>
-        <price type="per_object" currency="USD">48000</price>
-        <images>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/da0a7e05e89c882a4db19328bf3a2f84.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/1b642c86f49a3bbe940f47bfeae75f52.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/dfb6bb5a6e798653255a0cb1c9326dcb.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/4ee19b81ba8f84d643be133efcf36baa.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/82be47f0a56cc14ca1d419003c3e0053.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/23412384d447e230e0cba1c9c2cba34a.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/eefc4af97ceca2c4dff9a5a4d14935f1.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/2d7c8668ec8a586a88bade7f09394e4a.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/cb2bafdda2ae22ad17b99ef90c0635f8.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/51446c2ff30fbb8a71cbb0b2c8d4bc49.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/6313a7124d4cb74e9815819f3163fbe2.jpg</image_url>
-            <image_url>https://crm-08498194.s3.eu-west-1.amazonaws.com/makler-kr/estate-images/9219b2e74d9920446928f313ec43cdc1.jpg</image_url>
-        </images>
-        <properties>
-            <property attribute="property_2" label="Газ">Есть</property>
-            <property attribute="property_18" label="Ремонт">евроремонт</property>
-            <property attribute="property_44" label="тип дополнительный">в рекламе</property>
-            <property attribute="property_51" label="дополнительно">теневая база</property>
-            <property attribute="property_52" label="Отопление">централизованное</property>
-        </properties>
-        <user>
-            <email>proekt6@i.ua</email>
-            <name>Андрей</name>
-            <phones>
-                <phone>380971732450</phone>
-            </phones>
-        </user>
-        <tags>
-            <tag>горняцкий</tag>
-        </tags>
-        <created_at>2026-07-26T16:05:56+03:00</created_at>
-        <updated_at>2026-09-09T13:37:31+03:00</updated_at>
     </item>
 </response>
