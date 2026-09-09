@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kotusshka21.github.io/maklerkr/sitemap.xml
+Sitemap: https://maklerkr.vercel.app/sitemap.xml
