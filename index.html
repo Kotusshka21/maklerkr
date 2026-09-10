@@ -7,27 +7,29 @@
     <!-- Google Search Console підтвердження власності -->
     <meta name="google-site-verification" content="Qc7Ofq3nNkkcrlcsz0TT_tg1R3UxuCh6AhizNhsh5WM" />
 
-    <!-- SEO: Основні пошукові мета-теги -->
-    <title>Makler KR — Рієлтор №1 у Кривому Розі | Андрій Маклер</title>
-    <meta name="description" content="Купівля, продаж та оренда квартир і будинків у Кривому Розі. Повний юридичний супровід, перевірка документів, пряма база об'єктів. Рієлтор №1 — Андрій Маклер.">
+    <!-- SEO: Основні пошукові мета-теги з коротким дефісом -->
+    <title>Makler KR - Рієлтор №1 у Кривому Розі | Андрій Маклер</title>
+    <meta name="description" content="Купівля, продаж та оренда квартир і будинків у Кривому Розі. Повний юридичний супровід, пряма база об'єктів. Андрій Маклер.">
     <meta name="keywords" content="нерухомість Кривий Ріг, купити квартиру Кривий Ріг, рієлтор Кривий Ріг, агентство нерухомості Кривий Ріг, Makler KR">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://maklerkr.vercel.app/">
 
-    <!-- SEO: Open Graph для Viber, Telegram, Instagram, Facebook -->
+    <!-- Open Graph (Telegram, Viber, Instagram, Facebook) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://maklerkr.vercel.app/">
-    <meta property="og:title" content="Makler KR — Рієлтор №1 у Кривому Розі | Андрій Маклер">
-    <meta property="og:description" content="Безпечний та швидкий продаж нерухомості, вигідний підбір квартир і будинків під ваш бюджет у Кривому Розі.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:title" content="Makler KR - Рієлтор №1 у Кривому Розі | Андрій Маклер">
+    <meta property="og:description" content="Купівля та продаж нерухомості у Кривому Розі. Перевірка документів, швидкий підбір під ваш бюджет.">
+    <meta property="og:image" content="https://maklerkr.vercel.app/andriy.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- SEO: Структуровані дані Schema.org для Google -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "RealEstateAgent",
-      "name": "Makler KR — Агентство нерухомості",
-      "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+      "name": "Makler KR - Агентство нерухомості",
+      "image": "https://maklerkr.vercel.app/andriy.jpg",
       "url": "https://maklerkr.vercel.app/",
       "telephone": "+380971732450",
       "priceRange": "$$",
@@ -620,7 +622,7 @@
                 <!-- ФОТО АНДРІЯ МАКЛЕРА -->
                 <div class="realtor-photo-frame">
                     <img src="andriy.jpg" 
-                         alt="Андрій Маклер — Рієлтор №1 у Кривому Розі" 
+                         alt="Андрій Маклер - Рієлтор №1 у Кривому Розі" 
                          onerror="if (!this.triedImages) { this.triedImages = true; this.src = 'images/andriy.jpg'; }">
                 </div>
             </div>
@@ -655,7 +657,7 @@
         </div>
     </section>
 
-    <!-- ФОРМА ЗАЯВКИ (ВЛАСНИК / ПОКУПЕЦЬ) -->
+    <!-- ФОРМА ЗАЯВКИ (ВЛАСНИК / ПОКУПЕЦЬ) З ВІДПРАВКОЮ В TELEGRAM -->
     <section class="request-section" id="request">
         <div class="container">
             <div class="section-title">
@@ -665,16 +667,16 @@
             </div>
 
             <div class="form-card">
-                <form id="leadForm" onsubmit="event.preventDefault(); alert('Дякуємо! Ваша заявка успішно надіслана. Андрій Маклер зателефонує вам найближчим часом.');">
+                <form id="leadForm">
                     <div class="form-group">
                         <label>Хто ви?</label>
                         <div class="radio-options">
                             <label class="radio-label">
-                                <input type="radio" name="client_type" value="seller" checked>
+                                <input type="radio" name="client_type" value="Власник (хочу продати/здати)" checked>
                                 🏠 Я власник (хочу продати/здати)
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="client_type" value="buyer">
+                                <input type="radio" name="client_type" value="Покупець (хочу купити/зняти)">
                                 🔑 Я покупець (хочу купити/зняти)
                             </label>
                         </div>
@@ -693,14 +695,14 @@
                     <div class="form-group">
                         <label for="district">Бажаний район у Кривому Розі</label>
                         <select id="district" name="district" class="form-control">
-                            <option value="">Оберіть район (необов'язково)</option>
-                            <option value="center">Центрально-Міський</option>
-                            <option value="95">95-й квартал / Саксаганський</option>
-                            <option value="pokrov">Покровський</option>
-                            <option value="metalurg">Металургійний</option>
-                            <option value="dovgintsevo">Довгинцівський</option>
-                            <option value="ingulec">Інгулецький</option>
-                            <option value="terny">Тернівський</option>
+                            <option value="Не вказано">Оберіть район (необов'язково)</option>
+                            <option value="Центрально-Міський">Центрально-Міський</option>
+                            <option value="95-й квартал / Саксаганський">95-й квартал / Саксаганський</option>
+                            <option value="Покровський">Покровський</option>
+                            <option value="Металургійний">Металургійний</option>
+                            <option value="Довгинцівський">Довгинцівський</option>
+                            <option value="Інгулецький">Інгулецький</option>
+                            <option value="Тернівський">Тернівський</option>
                         </select>
                     </div>
 
@@ -709,7 +711,7 @@
                         <textarea id="description" name="comment" class="form-control" placeholder="Наприклад: 2-кімнатна, з ремонтом, поверх не перший/не останній, бюджет до $30 000 або параметри вашого житла для продажу..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn" style="width: 100%;">Надіслати заявку</button>
+                    <button type="submit" id="submitBtn" class="btn" style="width: 100%;">Надіслати заявку</button>
                 </form>
             </div>
         </div>
@@ -786,7 +788,7 @@
             <div>
                 <h3 style="color: var(--soft-gold); margin-bottom: 10px;">Makler KR</h3>
                 <p>На хвилі Кривого Рога!</p>
-                <p>Рієлтор №1 — Андрій Маклер</p>
+                <p>Рієлтор №1 - Андрій Маклер</p>
             </div>
             <div class="footer-links">
                 <h4>Контакти</h4>
@@ -804,6 +806,57 @@
             <p>&copy; Makler KR. Всі права захищені.</p>
         </div>
     </footer>
+
+    <!-- СКРИПТ ВІДПРАВКИ ЗАЯВКИ В TELEGRAM -->
+    <script>
+      const BOT_TOKEN = "8944481804:AAH9EK27VPC40QTGdz0_h1t2o6O-ahgvOKo";
+      const CHAT_ID = "984427425";
+
+      document.getElementById("leadForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Надсилання...";
+
+        const clientType = document.querySelector('input[name="client_type"]:checked')?.value || "Не вказано";
+        const name = document.getElementById("client_name").value.trim();
+        const phone = document.getElementById("client_phone").value.trim();
+        const districtSelect = document.getElementById("district");
+        const district = districtSelect.options[districtSelect.selectedIndex].text;
+        const comment = document.getElementById("description").value.trim() || "Не вказано";
+
+        const text = `🔔 *Нова заявка з сайту Makler KR!*\n\n` +
+                     `👤 *Тип клієнта:* ${clientType}\n` +
+                     `📝 *Ім'я:* ${name}\n` +
+                     `📞 *Телефон:* ${phone}\n` +
+                     `📍 *Район:* ${district}\n` +
+                     `💬 *Опис/Коментар:* ${comment}`;
+
+        try {
+          const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: CHAT_ID,
+              text: text,
+              parse_mode: "Markdown"
+            })
+          });
+
+          if (response.ok) {
+            alert("Дякуємо! Ваша заявка успішно надіслана. Андрій Маклер зв'яжеться з вами найближчим часом.");
+            document.getElementById("leadForm").reset();
+          } else {
+            alert("Помилка при відправці. Спробуйте ще раз або зателефонуйте напряму.");
+          }
+        } catch (error) {
+          alert("Сталася помилка з'єднання. Будь ласка, зателефонуйте нам за номером у шапці.");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Надіслати заявку";
+        }
+      });
+    </script>
 
     <!-- СКРИПТ АВТОМАТИЧНОЇ ВИТЯЖКИ ОБ'ЄКТІВ -->
     <script>
