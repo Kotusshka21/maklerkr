@@ -18,7 +18,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://maklerkr.vercel.app/">
     <meta property="og:title" content="Makler KR - Рієлтор №1 у Кривому Розі | Андрій Маклер">
-    <meta property="og:description" content="Безпечний та швидкий продаж нерухомості, вигідний підбір квартир і будинків під ваш бюджет.">
+    <meta property="og:description" content="Дякуємо! Ви вже на одній хвилі з Makler KR. Заявка успішно прилетіла прямо в Telegram Андрію Маклеру. Він зараз переглядає деталі та готує відповідь під Ваш запит. Очікуйте дзвінка найближчим часом - вирішимо питання з нерухомістю швидко, вигідно та без зайвих нервів.">
     <meta property="og:image" content="https://maklerkr.vercel.app/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -26,7 +26,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Makler KR - Рієлтор №1 у Кривому Розі | Андрій Маклер">
-    <meta name="twitter:description" content="Безпечний та швидкий продаж нерухомості, вигідний підбір квартир і будинків під ваш бюджет.">
+    <meta name="twitter:description" content="Дякуємо! Ви вже на одній хвилі з Makler KR. Заявка успішно прилетіла прямо в Telegram Андрію Маклеру. Він зараз переглядає деталі та готує відповідь під Ваш запит. Очікуйте дзвінка найближчим часом - вирішимо питання з нерухомістю швидко, вигідно та без зайвих нервів.">
     <meta name="twitter:image" content="https://maklerkr.vercel.app/og-image.jpg">
 
     <!-- SEO: Структуровані дані Schema.org для Google -->
@@ -88,11 +88,11 @@
         header {
             background-color: var(--navy);
             color: var(--white);
-            padding: 15px 0;
+            padding: 12px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .nav-container {
@@ -115,10 +115,11 @@
             font-size: 24px;
             color: var(--soft-gold);
             letter-spacing: 1px;
+            line-height: 1;
         }
 
         .logo span {
-            font-size: 12px;
+            font-size: 11px;
             font-family: 'Montserrat', sans-serif;
             color: var(--warm-beige);
             text-transform: uppercase;
@@ -169,6 +170,64 @@
         .header-phone:hover {
             background-color: var(--warm-beige);
             color: var(--navy) !important;
+        }
+
+        /* Адаптивна шапка для мобільних пристроїв */
+        @media (max-width: 992px) {
+            header {
+                padding: 10px 0 6px 0;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0 14px;
+                gap: 8px;
+            }
+
+            .nav-header-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo h2 {
+                font-size: 20px;
+            }
+
+            .logo span {
+                font-size: 10px;
+            }
+
+            .header-phone {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .nav-links {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            nav {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+                gap: 12px;
+                scrollbar-width: none; /* Приховуємо скролбар у Firefox */
+            }
+
+            nav::-webkit-scrollbar {
+                display: none; /* Приховуємо скролбар у Chrome/Safari */
+            }
+
+            nav a {
+                font-size: 12px;
+                background: rgba(255, 255, 255, 0.08);
+                padding: 4px 10px;
+                border-radius: 20px;
+            }
         }
 
         /* Головний блок (Hero) */
@@ -568,17 +627,6 @@
             font-size: 13px;
         }
 
-        @media (max-width: 992px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 12px;
-            }
-            nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-
         @media (max-width: 768px) {
             .hero-grid, .blog-grid {
                 grid-template-columns: 1fr;
@@ -591,24 +639,26 @@
 </head>
 <body>
 
-    <!-- Шапка сайту -->
+    <!-- Шапка сайту з оптимізованим мобільним форматом -->
     <header>
         <div class="nav-container">
-            <a href="index.html" class="logo">
-                <h2>Makler KR</h2>
-                <span>Агентство нерухомості</span>
-            </a>
+            <div class="nav-header-top">
+                <a href="index.html" class="logo">
+                    <h2>Makler KR</h2>
+                    <span>Агентство нерухомості</span>
+                </a>
+                <a href="tel:+380971732450" class="header-phone">📞 +380 97 173 24 50</a>
+            </div>
             <div class="nav-links">
                 <nav>
                     <a href="#about">Про рієлтора</a>
-                    <a href="catalog.html" style="color: var(--soft-gold); font-weight: 700;">🔍 Каталог (всі об'єкти)</a>
+                    <a href="catalog.html" style="color: var(--soft-gold); font-weight: 700;">🔍 Каталог</a>
                     <a href="#request">Залишити заявку</a>
                     <a href="#pricing">Прайс</a>
-                    <a href="#stories">Історії та Новини</a>
+                    <a href="#stories">Новини</a>
                     <a href="#careers">Вакансії</a>
                     <a href="#contacts">Контакти</a>
                 </nav>
-                <a href="tel:+380971732450" class="header-phone">📞 +380 97 173 24 50</a>
             </div>
         </div>
     </header>
@@ -617,7 +667,7 @@
     <section class="hero" id="about">
         <div class="container hero-grid">
             <div class="hero-text">
-                <div class="slogan">На хвилі Кривого Рога!</div>
+                <div class="slogan">На хвилі Кривого Рогу!</div>
                 <h1>Андрій Маклер</h1>
                 <p>Рієлтор №1 у Кривому Розі. Безпечний та швидкий продаж нерухомості, вигідний підбір квартир і будинків під ваш бюджет та юридична чистота кожної угоди.</p>
                 <div class="hero-cta">
@@ -793,7 +843,7 @@
         <div class="container footer-grid">
             <div>
                 <h3 style="color: var(--soft-gold); margin-bottom: 10px;">Makler KR</h3>
-                <p>На хвилі Кривого Рога!</p>
+                <p>На хвилі Кривого Рогу!</p>
                 <p>Рієлтор №1 - Андрій Маклер</p>
             </div>
             <div class="footer-links">
